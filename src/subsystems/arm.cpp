@@ -7,70 +7,70 @@ using namespace Robot::Globals;
 Arm::Arm()
 {
     int currentState = 0;
-    float current = 0;    // Current position from sensor
-    float error = 0;
-    float lastError = 0;
-    float integral = 0;
-    float derivative = 0;
-
-    // PID constants
-    float kP = 0.5;
-    float kI = 0.01;
-    float kD = 0.1;
 }
 
-void Arm::PID(float target) {
-    
-    current = arm_sensor.get_pitch();
+void Arm::PID(float target_angle) {
+    while (true) {
+        double current_angle = arm_sensor.get_pitch();
+        current_angle = ArmMotor.get_position(); 
 
-    error = target - current;
-    integral += error;
-    derivative = error - lastError; 
+        controller.print(0, 0, std::to_string(current_angle).c_str());
+        double error = target_angle - current_angle;
 
-    // PID formula
-    float output = (kP * error) + (kI * integral) + (kD * derivative);
+        // Compute the PID output
+        double output = arm_pid.update(error);
 
-    // Send the output to the motor
-    ArmMotor.move(output);
+        // Apply the output to the motor
+        ArmMotor.move(output);
 
-    // Save the current error for the next loop
-    lastError = error;
+        // Break the loop if close enough to the target (within a small tolerance)
+        if (fabs(error) < 50.0) {  // Adjust tolerance as needed
+            break;
+        }
+        std::cout << "looping " << error << "\n";
+        pros::delay(20);  // Small delay for loop stability
+    }
 }
 
 void Arm::run()
 {
 
-    // if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-    //     ArmMotor.move(127);
-    //     controller.print(0, 0, "arm up");
-    // }
-    // else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-    //     ArmMotor.move(-127);
-    //     controller.print(0, 0, "arm down");
-    // }
-    // else {
-    //     ArmMotor.brake();
-    //     controller.print(0, 0, "arm idle");
-    // }
-
-    // if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-    //     ArmClaw.toggle();
-    // }
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+        ArmClaw.toggle();
+    }
 
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
-        currentState = (currentState+1) % 3;
-        controller.print(0, 0, "switched");
+        currentState = (currentState+1) % 4;
+        // controller.print(0, 0, std::to_string(currentState).c_str());
     }
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) currentState = 4;
 
     switch (currentState) {
         case 0:
-            PID(43);
+            PID(-150);
             break;
         case 1:
-            PID(-35);
+            PID(-1500);
             break;
         case 2:
-            PID(60);
+            PID(-3000);
+            break;
+        case 3:
+            PID(-4500);
+            break;
+        default:
+            controller.print(0, 0, (std::to_string(ArmMotor.get_position()).c_str()));
+            // controller.print(1, 0,  std::to_string(arm_sensor.get_yaw()).c_str());
+            // PID(0);
+            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+                ArmMotor.move(127);
+            }
+            else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+                ArmMotor.move(-127);
+            }
+            else {
+                ArmMotor.brake();
+            }
             break;
     }
 

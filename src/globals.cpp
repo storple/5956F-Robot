@@ -51,7 +51,7 @@ pros::Imu inertial_sensor(17);
 
 pros::Rotation horizontalEnc(13);
 pros::Rotation verticalEnc(18);
-lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_275, -5.75);
+lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_275, -5.75); // figure the offsets
 lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, -2.5);
 
 RobotSubsystems subsystem;
@@ -62,9 +62,9 @@ RobotSubsystems subsystem;
 lemlib::Drivetrain drivetrain(
     &left_motors, // left motor group
     &right_motors, // right motor group
-    10, // 10 inch track width
-    lemlib::Omniwheel::NEW_4, // using new 4" omnis
-    360, // drivetrain rpm is 360
+    13.45, // track width (inches)
+    lemlib::Omniwheel::NEW_325, // using new 4" omnis
+    450, // drivetrain rpm 
     2 // horizontal drift is 2 (for now)
 );
 
@@ -78,9 +78,9 @@ lemlib::OdomSensors sensors(
 
 // forward/backward PID
 lemlib::ControllerSettings lateral_controller{
-    7.6,  // kP
+    1,  // kP
     0,    // KI
-    8,    // kD
+    0,    // kD
     3,    // Anti Windup
     1,    // smallErrorRange
     100,  // smallErrorTimeout
@@ -91,9 +91,9 @@ lemlib::ControllerSettings lateral_controller{
 
 // turning PID
 lemlib::ControllerSettings angular_controller{
-    4.04,  // kP
+    1,  // kP
     0,     // kI
-    24.5,  // kD
+    0,  // kD
     3,     // Anti Windup
     1,     // smallErrorRange
     100,   // smallErrorTimeout
@@ -102,10 +102,10 @@ lemlib::ControllerSettings angular_controller{
     0      // slew rate
 };
 
-lemlib::PID armPID(
-    5, // kP
-    0.01, // kI
-    20, // kD
+lemlib::PID arm_pid(
+    1, // kP
+    0, // kI
+    0, // kD
     5, // integral anti windup range
     false // don't reset integral when sign of error flips
 );

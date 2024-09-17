@@ -8,6 +8,14 @@ using namespace Robot::Globals;
  * Runs initialization code. This occurs as soon as the program is started.
  */
 void initialize() {
+
+    arm_sensor.reset();
+    while (arm_sensor.is_calibrating()) {
+        pros::delay(100);  // Wait for calibration
+    }
+
+    ArmMotor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+    ArmMotor.set_zero_position(0);
     ArmMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
 	pros::lcd::initialize();
@@ -46,7 +54,14 @@ void competition_initialize() {}
  */
 void autonomous() {
     // subsystem.autonomous.AutoDrive(subsystem.intake, subsystem.latch);
+     // set position to x:0, y:0, heading:0
+    chassis.setPose(0, 0, 0);
+    // move forwards
+    chassis.turnToHeading(90, 2000);
+
+    // chassis.moveToPoint(0, -10, 10000);
 }
+
 
 /**
  * Runs the operator control code. 

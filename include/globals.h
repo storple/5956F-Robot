@@ -58,6 +58,8 @@ extern lemlib::ControllerSettings lateral_controller;
 // turning PID
 extern lemlib::ControllerSettings angular_controller;
 
+extern lemlib::PID arm_pid;
+
 // curvature
 extern lemlib::ExpoDriveCurve steer_curve;
 extern lemlib::ExpoDriveCurve throttle_curve;
