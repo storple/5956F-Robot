@@ -32,6 +32,8 @@ pros::Motor RightBack(20, pros::v5::MotorGears::blue,
                       pros::v5::MotorUnits::degrees);
 pros::Motor IntakeMotor(9, pros::v5::MotorGears::blue,
                         pros::v5::MotorUnits::degrees);
+pros::Motor ArmMotor(14, pros::v5::MotorGears::blue,
+                        pros::v5::MotorUnits::degrees);
 
 pros::MotorGroup left_motors({LeftFront.get_port(), LeftMid.get_port(),
                              LeftBack.get_port()});
@@ -52,6 +54,7 @@ pros::Rotation verticalEnc(18);
 lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_275, -5.75);
 lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, -2.5);
 
+RobotSubsystems subsystem;
 
 // Describes the lemlib objects that are used to control the autonomous
 // functions of the robot.
@@ -98,6 +101,14 @@ lemlib::ControllerSettings angular_controller{
     500,   // largeErrorTimeout
     0      // slew rate
 };
+
+lemlib::PID armPID(
+    5, // kP
+    0.01, // kI
+    20, // kD
+    5, // integral anti windup range
+    false // don't reset integral when sign of error flips
+);
 
 lemlib::ExpoDriveCurve throttle_curve(
     3,     // joystick deadband out of 127

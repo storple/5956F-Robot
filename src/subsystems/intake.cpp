@@ -6,21 +6,16 @@ using namespace Robot::Globals;
 
 Intake::Intake()
 {
-	elevated = false;
-	alliance_color = false;
-	controller.print(0, 0, "Intake initialized");
 }
 
 void Intake::run()
 {
 	
-}
+	if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+		IntakeMotor.move(-127);
+	}
+	else {
+		IntakeMotor.brake();
+	}
 
-void Intake::toggle()
-{
-    
-}
-
-void Intake::score() {
-	
 }

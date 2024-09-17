@@ -5,19 +5,11 @@ using namespace Robot;
 using namespace Robot::Globals;
 
 /**
- * @brief Structure that holds instances of all robot subsystems.
- */
-struct RobotSubsystems {
-  Robot::Autonomous autonomous;
-  Robot::Drivetrain drivetrain;
-  Robot::Intake intake;
-  Robot::Latch latch;
-} subsystem;
-
-/**
  * Runs initialization code. This occurs as soon as the program is started.
  */
 void initialize() {
+    ArmMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 
@@ -73,6 +65,7 @@ void opcontrol() {
         subsystem.drivetrain.run();
         subsystem.latch.run();
         subsystem.intake.run();
+        subsystem.arm.run();
         
         pros::delay(25);
     }
