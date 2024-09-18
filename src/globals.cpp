@@ -18,11 +18,11 @@ namespace Globals {
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-pros::Motor LeftFront(2, pros::v5::MotorGears::blue,
+pros::Motor LeftFront(-2, pros::v5::MotorGears::blue,
                       pros::v5::MotorUnits::degrees);
-pros::Motor LeftMid(12, pros::v5::MotorGears::blue,
+pros::Motor LeftMid(-12, pros::v5::MotorGears::blue,
                     pros::v5::MotorUnits::degrees);
-pros::Motor LeftBack(11, pros::v5::MotorGears::blue,
+pros::Motor LeftBack(-11, pros::v5::MotorGears::blue,
                      pros::v5::MotorUnits::degrees);
 pros::Motor RightFront(10, pros::v5::MotorGears::blue,
                        pros::v5::MotorUnits::degrees);
@@ -40,9 +40,6 @@ pros::MotorGroup left_motors({LeftFront.get_port(), LeftMid.get_port(),
 pros::MotorGroup right_motors({RightFront.get_port(), RightMid.get_port(),
                               RightBack.get_port()});
 
-pros::adi::DigitalIn drivetrainToggleSwitch('G');
-pros::adi::DigitalIn autonToggleSwitch('F');
-
 pros::adi::Pneumatics LatchControl('A', false);
 pros::adi::Pneumatics ArmClaw('C', false);
 
@@ -51,8 +48,8 @@ pros::Imu inertial_sensor(17);
 
 pros::Rotation horizontalEnc(13);
 pros::Rotation verticalEnc(18);
-lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_275, -5.75); // figure the offsets
-lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, -2.5);
+lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_275, 1.25); // figure the offsets
+lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, 1);
 
 RobotSubsystems subsystem;
 
@@ -78,7 +75,7 @@ lemlib::OdomSensors sensors(
 
 // forward/backward PID
 lemlib::ControllerSettings lateral_controller{
-    1,  // kP
+    3,  // kP
     0,    // KI
     0,    // kD
     3,    // Anti Windup
@@ -91,7 +88,7 @@ lemlib::ControllerSettings lateral_controller{
 
 // turning PID
 lemlib::ControllerSettings angular_controller{
-    1,  // kP
+    3,  // kP
     0,     // kI
     0,  // kD
     3,     // Anti Windup

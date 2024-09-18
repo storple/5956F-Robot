@@ -9,6 +9,8 @@ using namespace Robot::Globals;
  */
 void initialize() {
 
+    std::cout << "initializing...\n";
+
     arm_sensor.reset();
     while (arm_sensor.is_calibrating()) {
         pros::delay(100);  // Wait for calibration
@@ -36,6 +38,8 @@ void initialize() {
             pros::delay(50);
         }
     });
+
+    std::cout << "Done initializing.\n";
 }
 
 /* Runs while the robot is disabled */
@@ -57,9 +61,9 @@ void autonomous() {
      // set position to x:0, y:0, heading:0
     chassis.setPose(0, 0, 0);
     // move forwards
-    chassis.turnToHeading(90, 2000);
+    chassis.moveToPoint(0, 40, 2000);
 
-    // chassis.moveToPoint(0, -10, 10000);
+    // chassis.turnToHeading(90, 2000);
 }
 
 
@@ -71,11 +75,14 @@ void opcontrol() {
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             autonomous();
         }
+
+        /* toggleable drive modes 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             std::string name = subsystem.drivetrain.toggleDrive();
         // Output the current drive mode to the controller screen
             controller.print(0, 0, name.c_str());
         }
+        */
 
         subsystem.drivetrain.run();
         subsystem.latch.run();

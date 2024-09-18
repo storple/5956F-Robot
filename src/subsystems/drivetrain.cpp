@@ -13,8 +13,8 @@ Drivetrain::Drivetrain()
 
 void Drivetrain::CurvatureDrive()
 {
-	int left  = -controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-	int right = -controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int left  = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+	int right = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 
 	chassis.curvature(left, right);
 
@@ -24,10 +24,10 @@ void Drivetrain::CurvatureDrive()
 void Drivetrain::ArcadeDrive()
 {
 	// Arcade Measurements
-	int left  = -controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-	int right = -controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int left  = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int right = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
-	chassis.arcade(left, right, false, 0.6);
+	chassis.arcade(left, right, true, 0.6);
 
 	pros::delay(15);
 }

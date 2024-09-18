@@ -12,9 +12,10 @@ Arm::Arm()
 void Arm::PID(float target_angle) {
     while (true) {
         double current_angle = arm_sensor.get_pitch();
+        controller.print(0, 0, std::to_string( arm_sensor.get_euler().pitch ).c_str());
+
         current_angle = ArmMotor.get_position(); 
 
-        controller.print(0, 0, std::to_string(current_angle).c_str());
         double error = target_angle - current_angle;
 
         // Compute the PID output
@@ -27,7 +28,7 @@ void Arm::PID(float target_angle) {
         if (fabs(error) < 50.0) {  // Adjust tolerance as needed
             break;
         }
-        std::cout << "looping " << error << "\n";
+
         pros::delay(20);  // Small delay for loop stability
     }
 }
@@ -39,39 +40,32 @@ void Arm::run()
         ArmClaw.toggle();
     }
 
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
-        currentState = (currentState+1) % 4;
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
+        currentState = (currentState + 1) % 3;
         // controller.print(0, 0, std::to_string(currentState).c_str());
     }
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) currentState = 4;
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {
+        currentState = (((currentState-1) % 3) + 3) % 3;
+    }
 
     switch (currentState) {
         case 0:
-            PID(-150);
+            PID(-175);
             break;
         case 1:
             PID(-1500);
             break;
         case 2:
-            PID(-3000);
+            PID(-2800);
             break;
-        case 3:
-            PID(-4500);
-            break;
-        default:
-            controller.print(0, 0, (std::to_string(ArmMotor.get_position()).c_str()));
-            // controller.print(1, 0,  std::to_string(arm_sensor.get_yaw()).c_str());
-            // PID(0);
-            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-                ArmMotor.move(127);
-            }
-            else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-                ArmMotor.move(-127);
-            }
-            else {
-                ArmMotor.brake();
-            }
-            break;
+        // default:
+        //     if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) 
+        //         ArmMotor.move(127);
+        //     else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) 
+        //         ArmMotor.move(-127);
+        //     else
+        //         ArmMotor.brake();
+        //     break;
     }
 
     pros::delay(15);

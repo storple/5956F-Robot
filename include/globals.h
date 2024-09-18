@@ -26,9 +26,6 @@ extern pros::MotorGroup left_motors;
 extern pros::MotorGroup right_motors;
 extern pros::MotorGroup drive_;
 
-extern pros::adi::DigitalIn drivetrainToggleSwitch;
-extern pros::adi::DigitalIn autonToggleSwitch;
-
 extern pros::adi::Pneumatics LatchControl;
 extern pros::adi::Pneumatics ArmClaw;
 
