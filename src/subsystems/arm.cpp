@@ -10,9 +10,11 @@ Arm::Arm()
 }
 
 void Arm::PID(float target_angle) {
+
+    int start_time = pros::millis();
+
     while (true) {
         double current_angle = arm_sensor.get_pitch();
-        controller.print(0, 0, std::to_string( arm_sensor.get_euler().pitch ).c_str());
 
         current_angle = ArmMotor.get_position(); 
 
@@ -26,6 +28,10 @@ void Arm::PID(float target_angle) {
 
         // Break the loop if close enough to the target (within a small tolerance)
         if (fabs(error) < 50.0) {  // Adjust tolerance as needed
+            break;
+        }
+        
+        if (pros::millis() - start_time > 2000) {
             break;
         }
 
@@ -58,6 +64,7 @@ void Arm::run()
         case 2:
             PID(-2800);
             break;
+
         // default:
         //     if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) 
         //         ArmMotor.move(127);

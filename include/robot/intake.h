@@ -8,6 +8,8 @@ namespace Robot
  */
 class Intake {
 public:
+
+	int currentlyOn;
 	/**
 	 * @brief Runs the main function of the intake system.
 	 *
@@ -15,6 +17,8 @@ public:
 	 * autonomous.
 	 */
 	void run();
+	void run(int msec);
+	void toggle(int speed);
 
 	/**
 	 * @brief Outakes alliance rings into latched mobile goal and ejects enemy rings.

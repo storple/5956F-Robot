@@ -75,9 +75,10 @@ lemlib::OdomSensors sensors(
 
 // forward/backward PID
 lemlib::ControllerSettings lateral_controller{
-    3,  // kP
-    0,    // KI
-    0,    // kD
+    // tested 4, 0.1, 3
+    4,    // kP3
+    0.,    // KI 0.1
+    7,    // kD7
     3,    // Anti Windup
     1,    // smallErrorRange
     100,  // smallErrorTimeout
@@ -88,9 +89,9 @@ lemlib::ControllerSettings lateral_controller{
 
 // turning PID
 lemlib::ControllerSettings angular_controller{
-    3,  // kP
+    2,  // kP
     0,     // kI
-    0,  // kD
+    10,  // kD
     3,     // Anti Windup
     1,     // smallErrorRange
     100,   // smallErrorTimeout
@@ -100,9 +101,9 @@ lemlib::ControllerSettings angular_controller{
 };
 
 lemlib::PID arm_pid(
-    1, // kP
+    0.5, // kP
     0, // kI
-    0, // kD
+    0   , // kD
     5, // integral anti windup range
     false // don't reset integral when sign of error flips
 );

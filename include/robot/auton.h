@@ -13,7 +13,7 @@ namespace Robot
  */
 class Autonomous {
 public:
-	enum AUTON_ROUTINE { RED_LEFT = 1, RED_RIGHT = 2, BLUE_LEFT = -1, BLUE_RIGHT = -2, SKILLS = 0};
+	enum AUTON_ROUTINE { BLUE_POS = 1, BLUE_NEG = 2, RED_POS = -1, RED_NEG = -2, SKILLS = 0};
 
 	/**
 	 * @brief Sets the number of the autonomous program to use.
