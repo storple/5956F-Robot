@@ -31,7 +31,7 @@ void Arm::PID(float target_angle) {
             break;
         }
         
-        if (pros::millis() - start_time > 2000) {
+        if (pros::millis() - start_time > 1000) {
             break;
         }
 
