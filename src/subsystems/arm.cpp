@@ -42,13 +42,15 @@ void Arm::PID(float target_angle) {
 void Arm::run()
 {
 
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
         ArmClaw.toggle();
     }
 
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+        currentState = -1;
+    }
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
         currentState = (currentState + 1) % 3;
-        // controller.print(0, 0, std::to_string(currentState).c_str());
     }
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {
         currentState = (((currentState-1) % 3) + 3) % 3;
@@ -64,15 +66,14 @@ void Arm::run()
         case 2:
             PID(-2800);
             break;
-
-        // default:
-        //     if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) 
-        //         ArmMotor.move(127);
-        //     else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) 
-        //         ArmMotor.move(-127);
-        //     else
-        //         ArmMotor.brake();
-        //     break;
+        default:
+            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) 
+                ArmMotor.move(127);
+            else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) 
+                ArmMotor.move(-127);
+            else
+                ArmMotor.brake();
+            break;
     }
 
     pros::delay(15);

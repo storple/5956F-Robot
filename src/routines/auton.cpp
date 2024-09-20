@@ -17,30 +17,32 @@ void Autonomous::Auton1(Intake &intake, Latch &latch)
 	subsystem.arm.PID(-500);
 
 
-	// move to wall stake
+	// move towards wall stake
 	chassis.moveToPoint(0.03, 32, 2000);
 	chassis.turnToHeading(-90, 1000);
 	chassis.moveToPoint(12, 32, 2000, {.forwards=false});
 	chassis.turnToHeading(-90, 500);
 
-	// head towards stake
+	// score on wall stake
 	subsystem.intake.toggle(127);
 	pros::delay(1000);
 	 chassis.moveToPoint(25, 32, 1000, {.forwards=false});
 	chassis.moveToPoint(0.3, 34, 1000);
 	subsystem.intake.toggle(0);
 
+	// pick up mobile goal
 	chassis.turnToHeading(55, 1000);
 	subsystem.latch.toggle();
 	chassis.moveToPoint(-40.07, 1, 3000,{.forwards=false, .maxSpeed=50}, false);
 	subsystem.latch.toggle();
 	pros::delay(500);
 
-
+	// score ring
 	chassis.turnToHeading(180,1000);
 	subsystem.intake.toggle(100);
-
     chassis.moveToPoint(-44.07, -32, 2000);
+
+	// move towards ladder
 	pros::delay(1000);
 	chassis.turnToHeading(90, 1000);
 	pros::delay(500);
@@ -62,30 +64,31 @@ void Autonomous::Auton3(Intake &intake, Latch &latch) {
 	chassis.setPose(0, 0, 0);
 	subsystem.arm.PID(-500);
 
-
 	// move to wall stake
 	chassis.moveToPoint(0.03, 32, 2000);
 	chassis.turnToHeading(90, 1000);
 	chassis.moveToPoint(-12, 32, 2000, {.forwards=false});
 	chassis.turnToHeading(90, 500);
 
-	// head towards stake
+	// score on wall stake
 	subsystem.intake.toggle(127);
 	pros::delay(1000);
 	 chassis.moveToPoint(25, 32, 1000, {.forwards=false});
 	chassis.moveToPoint(0.3, 34, 1000);
 	subsystem.intake.toggle(0);
 
+	// move towards mobile goal
 	chassis.turnToHeading(55, 1000);
 	subsystem.latch.toggle();
 	chassis.moveToPoint(-40.07, 1, 3000,{.forwards=false, .maxSpeed=50}, false);
 	subsystem.latch.toggle();
 	pros::delay(500);
 
-
+	// score ring
 	chassis.turnToHeading(180,1000);
 	subsystem.intake.toggle(100);
 
+	// move towards ladder
     chassis.moveToPoint(-44.07, -32, 2000);
 	pros::delay(1000);
 	chassis.turnToHeading(90, 1000);
@@ -102,7 +105,6 @@ void Autonomous::Auton4(Intake &intake, Latch &latch)
 	chassis.setPose(0, 0, 0);
 	subsystem.arm.PID(-500);
 
-
 	// move to wall stake
 	chassis.moveToPoint(0.03, 32, 2000);
 	chassis.turnToHeading(-90, 1000);
@@ -116,20 +118,23 @@ void Autonomous::Auton4(Intake &intake, Latch &latch)
 	 chassis.moveToPoint(0.3, 34, 1000);
 	subsystem.intake.toggle(0);
 
+	// get mobile goal
 	chassis.turnToHeading(55, 1000);
 	subsystem.latch.toggle();
 	chassis.moveToPoint(-40.07, 1, 3000,{.forwards=false, .maxSpeed=60}, false);
 	subsystem.latch.toggle();
 	pros::delay(500);
 
-
+	
+	// score rings
 	chassis.turnToHeading(180,1000);
 	subsystem.intake.toggle(100);
-
     chassis.moveToPoint(-44.07, -32, 2000);
 	pros::delay(1000);
 	chassis.turnToHeading(-100, 1000);
 	chassis.moveToPoint(-60.07, -38, 2000);
+
+	// move towards ladder
 	chassis.turnToHeading(-10, 1000);
 	subsystem.arm.PID(-2000);
 	subsystem.arm.currentState = 2;
