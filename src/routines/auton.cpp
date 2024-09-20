@@ -196,8 +196,8 @@ void Autonomous::Auton5(Intake &intake, Latch &latch) {
 	chassis.moveToPoint(30, 45, 2000);
 	chassis.moveToPoint(56.5, 73, 2000);
 	chassis.turnToHeading(180, 1000);
-	chassis.moveToPoint(66, 9, 2000);
-	chassis.moveToPoint(65, 38, 2000, {.forwards=false});
+	chassis.moveToPoint(66, 9, 2000, {.maxSpeed=80});
+	chassis.moveToPoint(65, 40, 2000, {.forwards=false});
 	chassis.turnToHeading(150, 1000);
 	chassis.moveToPoint(77, 23.5, 2000);
 	chassis.turnToHeading(-20, 1000);
@@ -213,13 +213,18 @@ void Autonomous::Auton5(Intake &intake, Latch &latch) {
 	chassis.moveToPoint(-33.5, 45, 2000);
 	chassis.moveToPoint(-60, 76.4, 2000);
 	chassis.turnToHeading(180, 1000);
-	chassis.moveToPoint(-65.5, 28, 2000);
-	chassis.moveToPoint(-65, 43, 2000);
+	chassis.moveToPoint(-65.5, 20, 2000, {.maxSpeed=80});
+	chassis.moveToPoint(-65, 43, 2000, {.forwards=false});
 	chassis.turnToHeading(-151, 1000);
 	chassis.moveToPoint(-79, 22.5, 2000);
 	chassis.turnToHeading(0, 1000);
 	chassis.moveToPoint(-77.5, 4, 2000, {.forwards=false});
 	subsystem.latch.toggle();
+
+	// getting the hang
+	subsystem.arm.PID(-3800);
+	chassis.moveToPoint(0, 70, 2000, {.maxSpeed=60});
+
 
 }
 

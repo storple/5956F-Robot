@@ -67,6 +67,8 @@ void Arm::run()
             PID(-2800);
             break;
         default:
+            pros::delay(50);
+            pros::lcd::print(3, "Arm: %f", ArmMotor.get_position());
             if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) 
                 ArmMotor.move(127);
             else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) 
