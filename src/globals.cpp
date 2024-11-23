@@ -1,6 +1,7 @@
 #include "globals.h"
 #include "pros/abstract_motor.hpp"
 #include "pros/motors.hpp"
+#include "liblvgl/lvgl.h"
 
 /*
  * Although the following constants belong in their own seperate
@@ -18,49 +19,59 @@ namespace Globals {
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-pros::Motor LeftFront(-2, pros::v5::MotorGears::blue,
+pros::Motor LeftFront(-20, pros::v5::MotorGears::blue,
                       pros::v5::MotorUnits::degrees);
-pros::Motor LeftMid(-12, pros::v5::MotorGears::blue,
+pros::Motor LeftMid(-17, pros::v5::MotorGears::blue,
                     pros::v5::MotorUnits::degrees);
-pros::Motor LeftBack(-11, pros::v5::MotorGears::blue,
+pros::Motor LeftBack(-18, pros::v5::MotorGears::blue,
                      pros::v5::MotorUnits::degrees);
-pros::Motor RightFront(10, pros::v5::MotorGears::blue,
+pros::Motor RightFront(16, pros::v5::MotorGears::blue,
                        pros::v5::MotorUnits::degrees);
 pros::Motor RightMid(19, pros::v5::MotorGears::blue,
                      pros::v5::MotorUnits::degrees);
-pros::Motor RightBack(20, pros::v5::MotorGears::blue,
+pros::Motor RightBack(12, pros::v5::MotorGears::blue,
                       pros::v5::MotorUnits::degrees);
-pros::Motor IntakeMotor(9, pros::v5::MotorGears::blue,
+pros::Motor IntakeMotor(11, pros::v5::MotorGears::blue,
                         pros::v5::MotorUnits::degrees);
-pros::Motor ArmMotor(14, pros::v5::MotorGears::blue,
+pros::Motor ArmMotor1(-9, pros::v5::MotorGears::blue,
                         pros::v5::MotorUnits::degrees);
+pros::Motor ArmMotor2(10, pros::v5::MotorGears::blue,
+                        pros::v5::MotorUnits::degrees);
+
 
 pros::MotorGroup left_motors({LeftFront.get_port(), LeftMid.get_port(),
                              LeftBack.get_port()});
 pros::MotorGroup right_motors({RightFront.get_port(), RightMid.get_port(),
                               RightBack.get_port()});
 
-pros::adi::Pneumatics LatchControl('A', false);
-pros::adi::Pneumatics ArmClaw('C', false);
+pros::adi::Pneumatics Doinker('A', false);
+pros::adi::Pneumatics LatchControl('B', false);
+pros::adi::Pneumatics IntakeLift('C', false); // TODO: port b will be IntakeLift, port C will be doinker, port D will be LimitSwitch
 
-pros::Imu arm_sensor(15);
-pros::Imu inertial_sensor(17);
+pros::adi::DigitalIn LimitSwitch('D');
 
-pros::Rotation horizontalEnc(13);
-pros::Rotation verticalEnc(18);
-lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_275, 1.25); // figure the offsets
-lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, 1);
+pros::Rotation arm_sensor(7);
+pros::Imu inertial_sensor(4);
+pros::Optical color_sensor(15);
+pros::Distance distance_sensor(13);
+// pros::Distance wall_sensor(8);
+
+pros::Rotation horizontalEnc(1);
+pros::Rotation verticalEnc(-2);
+lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, -2.9375); // figure the offsets
+lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, 0.03125);
 
 RobotSubsystems subsystem;
+AutonRoutes active_route = BLUE_LEFT;  // Default to NONE // red_left moveToPoint - red_right turnToHeading - blue_left JERRYIO path
 
-// Describes the lemlib objects that are used to control the autonomous
-// functions of the robot.
-// TODO: adjust settings.
+bool useColorSort = true;
+int x = 5;
+
 lemlib::Drivetrain drivetrain(
     &left_motors, // left motor group
     &right_motors, // right motor group
-    13.45, // track width (inches)
-    lemlib::Omniwheel::NEW_325, // using new 4" omnis
+    11.359375, // track width (inches)
+    lemlib::Omniwheel::NEW_325,
     450, // drivetrain rpm 
     2 // horizontal drift is 2 (for now)
 );
@@ -75,33 +86,32 @@ lemlib::OdomSensors sensors(
 
 // forward/backward PID
 lemlib::ControllerSettings lateral_controller{
-    // tested 4, 0.1, 3
-    4,    // kP3
-    0.,    // KI 0.1
-    7,    // kD7
-    3,    // Anti Windup
-    1,    // smallErrorRange
-    100,  // smallErrorTimeout
-    3,    // largeErrorRange
-    500,  // largeErrorTimeout
-    90    // slew rate
+    6,    // kP
+    0,    // KI 
+    8,    // kD
+    0,    // Anti Windup
+    0,    // smallErrorRange
+    0,  // smallErrorTimeout
+    0,    // largeErrorRange             
+    0,  // largeErrorTimeout
+    0    // slew rate
 };
 
 // turning PID
 lemlib::ControllerSettings angular_controller{
     2,  // kP
     0,     // kI
-    10,  // kD
-    3,     // Anti Windup
-    1,     // smallErrorRange
-    100,   // smallErrorTimeout
-    3,     // largeErrorRange
-    500,   // largeErrorTimeout
+    8,  // kD
+    0,     // Anti Windup
+    0,     // smallErrorRange
+    0,   // smallErrorTimeout
+    0,     // largeErrorRange
+    0,   // largeErrorTimeout
     0      // slew rate
 };
 
 lemlib::PID arm_pid(
-    0.5, // kP
+    0.01, // kP
     0, // kI
     0   , // kD
     5, // integral anti windup range

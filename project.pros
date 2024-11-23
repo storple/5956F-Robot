@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "skills",
+    "project_name": "5956F",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -297,7 +297,9 @@
         "version": "8.3.8"
       }
     },
-    "upload_options": {},
+    "upload_options": {
+      "icon": "pizza"
+    },
     "use_early_access": false
   }
 }

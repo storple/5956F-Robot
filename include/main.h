@@ -40,8 +40,9 @@
 #include "robot/auton.h"
 #include "robot/drivetrain.h"
 #include "robot/intake.h"
-#include "robot/latch.h"
+#include "robot/pneumatics.h"
 #include "robot/arm.h"
+#include "robot/screen.h"
 // #include "screen/selector.h"
 // #include "screen/status.h"
 

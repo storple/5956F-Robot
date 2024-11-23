@@ -10,7 +10,9 @@ class Arm {
 
   public:
 
-    int currentState;
+    int currentState = -1;
+    bool autoMode = false;
+    bool pressed = true;
 
     void PID(float target);
 

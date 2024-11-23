@@ -9,13 +9,16 @@ namespace Robot
 class Intake {
 public:
 
-	int currentlyOn;
+	bool currentlyOn;
+	bool playingRed;
+	
 	/**
 	 * @brief Runs the main function of the intake system.
 	 *
 	 * Takes optional user input to control the direction of the intake system in
 	 * autonomous.
 	 */
+	bool detectBadColor();
 	void run();
 	void run(int msec);
 	void toggle(int speed);
