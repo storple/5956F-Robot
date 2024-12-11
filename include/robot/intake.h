@@ -18,10 +18,11 @@ public:
 	 * Takes optional user input to control the direction of the intake system in
 	 * autonomous.
 	 */
+	bool detectRing();
 	bool detectBadColor();
 	void run();
 	void run(int msec);
-	void toggle(int speed);
+	void toggle();
 
 	/**
 	 * @brief Outakes alliance rings into latched mobile goal and ejects enemy rings.
@@ -29,11 +30,6 @@ public:
 	void score();
 
 	Intake();
-
-	/**
-	 * @brief Toggles intake elevation.
-	 */
-	void toggle();
 
 private:
 	bool elevated;

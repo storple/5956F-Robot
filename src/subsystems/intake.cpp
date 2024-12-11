@@ -10,13 +10,17 @@ Intake::Intake()
 	bool playingRed = false;
 }
 
+bool Intake::detectRing() {
+	return (color_sensor.get_proximity() >= 230);
+}
+
 bool Intake::detectBadColor() {
 	// 250 +- 50 maybe for BLUE
 	// 0-50 ish for RED
 	double hue = color_sensor.get_hue();
 	double proximity = color_sensor.get_proximity();
 
-	return ((proximity == 255) and ((0 <= hue and hue <= 50 and !playingRed) or (200 <= hue and hue <= 300 and playingRed)));
+	return ((detectRing()) and ((0 <= hue and hue <= 50 and !playingRed) or (200 <= hue and hue <= 300 and playingRed)));
 	
 }
 
@@ -68,9 +72,9 @@ void Intake::run(int msec) {
 	IntakeMotor.brake();
 }
 
-void Intake::toggle(int speed) {
+void Intake::toggle() {
 	if (!currentlyOn) {
-		IntakeMotor.move(-speed);
+		IntakeMotor.move(-127);
 	}
 	else {
 		IntakeMotor.brake();

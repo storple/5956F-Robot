@@ -31,7 +31,7 @@ pros::Motor RightMid(19, pros::v5::MotorGears::blue,
                      pros::v5::MotorUnits::degrees);
 pros::Motor RightBack(12, pros::v5::MotorGears::blue,
                       pros::v5::MotorUnits::degrees);
-pros::Motor IntakeMotor(11, pros::v5::MotorGears::blue,
+pros::Motor IntakeMotor(-11, pros::v5::MotorGears::blue,
                         pros::v5::MotorUnits::degrees);
 pros::Motor ArmMotor1(-9, pros::v5::MotorGears::blue,
                         pros::v5::MotorUnits::degrees);
@@ -40,9 +40,9 @@ pros::Motor ArmMotor2(10, pros::v5::MotorGears::blue,
 
 
 pros::MotorGroup left_motors({LeftFront.get_port(), LeftMid.get_port(),
-                             LeftBack.get_port()});
+                             LeftBack.get_port()}, pros::MotorGearset::blue);
 pros::MotorGroup right_motors({RightFront.get_port(), RightMid.get_port(),
-                              RightBack.get_port()});
+                              RightBack.get_port()}, pros::MotorGearset::blue);
 
 pros::adi::Pneumatics Doinker('A', false);
 pros::adi::Pneumatics LatchControl('B', false);
@@ -54,17 +54,17 @@ pros::Rotation arm_sensor(7);
 pros::Imu inertial_sensor(4);
 pros::Optical color_sensor(15);
 pros::Distance distance_sensor(13);
-// pros::Distance wall_sensor(8);
+pros::Distance wall_sensor(14);
 
 pros::Rotation horizontalEnc(1);
 pros::Rotation verticalEnc(-2);
-lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, -2.9375); // figure the offsets
-lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, 0.03125);
+lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, 0.5); // figure the offsets
+lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, -3.1353);
 
 RobotSubsystems subsystem;
-AutonRoutes active_route = BLUE_LEFT;  // Default to NONE // red_left moveToPoint - red_right turnToHeading - blue_left JERRYIO path
+AutonRoutes active_route = SKILLS;  // Default to NONE // red_left moveToPoint - red_right turnToHeading - blue_left JERRYIO path
 
-bool useColorSort = true;
+bool useColorSort = false;
 int x = 5;
 
 lemlib::Drivetrain drivetrain(

@@ -42,6 +42,7 @@ extern pros::Rotation arm_sensor;
 extern pros::Imu inertial_sensor;
 extern pros::Optical color_sensor;
 extern pros::Distance distance_sensor;
+extern pros::Distance wall_sensor;
 
 /**
  * @brief Structure that holds instances of all robot subsystems.
@@ -56,7 +57,7 @@ struct RobotSubsystems {
 
 extern RobotSubsystems subsystem;
 
-enum AutonRoutes { RED_LEFT, RED_RIGHT, BLUE_LEFT, BLUE_RIGHT, SKILLS, NONE };
+enum AutonRoutes { RED_NEG, RED_POS, BLUE_NEG, BLUE_POS, SKILLS, NONE };
 extern AutonRoutes active_route;
 
 extern bool useColorSort;

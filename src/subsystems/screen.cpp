@@ -42,10 +42,10 @@ void set_info_label(const char* s) {
 }
 
 // event callbacks 
-void red_left_cb(lv_event_t *e) { set_info_label("red left"); active_route = RED_LEFT; update_fields(); }
-void red_right_cb(lv_event_t *e) { set_info_label("red right"); active_route = RED_RIGHT; update_fields(); }
-void blue_left_cb(lv_event_t *e) { set_info_label("blue left"); active_route = BLUE_LEFT; update_fields(); }
-void blue_right_cb(lv_event_t *e) { set_info_label("blue right"); active_route = BLUE_RIGHT; update_fields(); }
+void red_left_cb(lv_event_t *e) { set_info_label("red left"); active_route = RED_NEG; update_fields(); }
+void red_right_cb(lv_event_t *e) { set_info_label("red right"); active_route = RED_POS; update_fields(); }
+void blue_left_cb(lv_event_t *e) { set_info_label("blue left"); active_route = BLUE_NEG; update_fields(); }
+void blue_right_cb(lv_event_t *e) { set_info_label("blue right"); active_route = BLUE_POS; update_fields(); }
 
 // Helper function to create buttons
 lv_obj_t *make_button(lv_obj_t *holder, int posX, int posY, int width, int height, const char* s, bool red, void (*callback)(lv_event_t *)) {

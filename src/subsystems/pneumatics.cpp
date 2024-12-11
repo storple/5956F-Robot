@@ -13,6 +13,7 @@ void Pneumatics::run() {
     state = true;
   }
 
+
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) { Pneumatics::toggleLatch(); state = !state; pros::delay(500); }
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) { Pneumatics::toggleDoinker(); }
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) { Pneumatics::toggleIntakeLift(); }

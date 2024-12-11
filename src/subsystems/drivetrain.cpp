@@ -46,17 +46,18 @@ void Drivetrain::TankDrive()
 // Run the drivetrain depending on the control mode
 void Drivetrain::run()
 {
-	switch (Drivetrain::driveMode) {
-	case CURVATURE_DRIVE:
-		Drivetrain::CurvatureDrive();
-		break;
-	case ARCADE_DRIVE:
-		Drivetrain::ArcadeDrive();
-		break;
-	case TANK_DRIVE:
-		Drivetrain::TankDrive();
-		break;
-	}
+	Drivetrain::ArcadeDrive();
+	// switch (Drivetrain::driveMode) {
+	// case CURVATURE_DRIVE:
+	// 	Drivetrain::CurvatureDrive();
+	// 	break;
+	// case ARCADE_DRIVE:
+	// 	Drivetrain::ArcadeDrive();
+	// 	break;
+	// case TANK_DRIVE:
+	// 	Drivetrain::TankDrive();
+	// 	break;
+	// }
 }
 
 // Cycle through each drivetrain control mode, overflows back to 0

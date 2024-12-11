@@ -24,11 +24,15 @@ void Arm::PID(float target_angle) {
 
         // Break the loop if close enough to the target (within a small tolerance)
         if (fabs(error) < 750) {  // Adjust tolerance as needed
-            return;
+            ArmMotor1.move(0);
+            ArmMotor2.move(0);
+            break;
         }
         
         if (pros::millis() - start_time > 500) {
-            return;
+            ArmMotor1.move(0);
+            ArmMotor2.move(0);
+            break;
         }
 
         pros::delay(20);  // Small delay for loop stability
