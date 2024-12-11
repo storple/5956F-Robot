@@ -21,7 +21,7 @@ public:
 	 * value indicating whether to use autonomous mode.
 	 */
 	void AutoDrive();
-
+	void WallSensorPID(float target_distance, int timeout);
 
 private:
 	void Auton1();

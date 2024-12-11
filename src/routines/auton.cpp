@@ -6,6 +6,29 @@ using namespace Robot::Globals;
 
 ASSET(abc_txt);
 
+void Autonomous::WallSensorPID(float target_distance, int timeout) {
+
+    int start_time = pros::millis();
+
+    while (true) {
+
+        long double error = target_distance - (wall_sensor.get());
+
+        double output = wall_sensor_pid.update((double) error);
+
+        left_motors.move(-output);
+		right_motors.move(-output);
+
+        if ((fabs(error) < 5) or (pros::millis() - start_time > timeout)) { 
+            left_motors.brake();
+			right_motors.brake();
+            break;
+        }
+        
+        pros::delay(20);
+    }
+}
+
 void Autonomous::Auton1()
 {
 	
@@ -202,6 +225,7 @@ void Autonomous::Auton4()
 void Autonomous::Skills() 
 {
 	chassis.setPose(0, 0, 0);
+
 	subsystem.intake.toggle();
 	pros::delay(500);
 	chassis.turnToHeading(105, 1000);
@@ -222,25 +246,23 @@ void Autonomous::Skills()
 	subsystem.pneumatics.toggleLatch();
 	
 	chassis.turnToHeading(10, 1000);
-	chassis.moveToPose(-24, 28, -20,1000);
+	chassis.moveToPose(-24, 28, -20, 1000);
+	chassis.waitUntilDone();
 	chassis.moveToPoint(-48, 88, 2000);
+	pros::delay(600);
+	subsystem.arm.PID(4000);
+	chassis.waitUntilDone();
+	subsystem.intake.toggle();
+	pros::delay(500);
+	subsystem.arm.PID(10500);
+	pros::delay(500);
+	subsystem.intake.toggle();
 	chassis.turnToHeading(184, 1000);
 	chassis.waitUntilDone();
-	subsystem.arm.PID(3800);
 
-	chassis.moveToPoint(-60, 54, 1500);
-	chassis.waitUntilDone();
-
-	// start_time = pros::millis();
-	// subsystem.arm.PID(3800);
-	// left_motors.move(100);
-	// right_motors.move(100);
-	// while (wall_sensor.get() > 1650) {
-	// 	pros::delay(20);
-	// 	if (pros::millis() - start_time > 2000) break;
-	// }
-	// left_motors.brake();
-	// right_motors.brake();
+	subsystem.autonomous.WallSensorPID(1610, 2000);
+	// chassis.moveToPoint(-60, 54, 1500);
+	// chassis.waitUntilDone();
 
 	chassis.turnToHeading(-90, 1000);
 	chassis.waitUntilDone();
@@ -248,31 +270,15 @@ void Autonomous::Skills()
 	// chassis.moveToPoint(-68, 64, 1000);
 	// chassis.waitUntilDone();
 	
-	start_time = pros::millis();
-	subsystem.arm.PID(3800);
-	left_motors.move(30);
-	right_motors.move(30);
-	while (wall_sensor.get() > 148) {
-		pros::delay(20);
-		if (pros::millis() - start_time > 2000) break;
-	}
-	left_motors.brake();
-	right_motors.brake();
-	
+	subsystem.autonomous.WallSensorPID(130, 1000);
+		
 	pros::delay(500);
 	subsystem.intake.toggle();
 	pros::delay(700);
 	subsystem.arm.PID(15400);
 
-	start_time = pros::millis();
-	left_motors.move(-30);
-	right_motors.move(-30);
-	while (wall_sensor.get() < 400) {
-		pros::delay(20);
-		if (pros::millis() - start_time > 1500) break;
-	}
-	left_motors.brake();
-	right_motors.brake();
+
+	subsystem.autonomous.WallSensorPID(400, 1000);
 
 	// chassis.moveToPoint(-44, 60, 1000, {.forwards=false});
 	// chassis.waitUntilDone();
@@ -283,7 +289,7 @@ void Autonomous::Skills()
 	chassis.moveToPoint(-48, -10, 3000, {.maxSpeed=50});
 	chassis.moveToPoint(-52, 10, 2500);
 	chassis.waitUntilDone();
-	chassis.moveToPoint(-68, -10, 2000, {.forwards=false});
+	chassis.moveToPoint(-72, -10, 2000, {.forwards=false});
 	subsystem.intake.toggle();
 	chassis.waitUntilDone();
 	subsystem.pneumatics.toggleLatch();

@@ -118,6 +118,15 @@ lemlib::PID arm_pid(
     false // don't reset integral when sign of error flips
 );
 
+lemlib::PID wall_sensor_pid(
+    0.2, // kP
+    0, // kI
+    1, // kD
+    5, // integral anti windup range
+    false // don't reset integral when sign of error flips
+);
+
+
 lemlib::ExpoDriveCurve throttle_curve(
     3,     // joystick deadband out of 127
     10,    // minimum output where drivetrain will move out of 127
