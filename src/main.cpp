@@ -35,7 +35,7 @@ void initialize() {
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-            pros::lcd::print(5, "distance: %d", wall_sensor.get()); // x
+            pros::lcd::print(5, "distance: %d", wall_sensor_back.get()); // x
 
             // log position telemetry
             lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
@@ -71,10 +71,15 @@ void autonomous() {
  */
 void opcontrol() {
 
+    // if (subsystem.pneumatics.detectMogo()) 
+    //     subsystem.pneumatics.state = false;
+    // else
+    //     subsystem.pneumatics.state = true;
+
     pros::Task drivetrainTask([] { while (true) { subsystem.drivetrain.run(); } });
     pros::Task pneumaticsTask([] { while (true) { subsystem.pneumatics.run(); } });
     pros::Task intakeTask([] { while (true) { subsystem.intake.run(); } });
-    pros::Task armTask([] { while (true) { subsystem.arm.run(); } });
+    pros::Task armTask([] { while (true) { subsystem.arm.run(); subsystem.arm.update(); } });
 
     while (true) {
         pros::lcd::print(5, "distance: %d", wall_sensor.get()); // x

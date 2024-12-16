@@ -8,10 +8,10 @@ Pneumatics::Pneumatics() { ; }
 
 void Pneumatics::run() {
 
-  if (detectMogo() && !state) {
-    Pneumatics::toggleLatch();
-    state = true;
-  }
+  // if (detectMogo() && !state) {
+  //   Pneumatics::toggleLatch();
+  //   state = true;
+  // }
 
 
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) { Pneumatics::toggleLatch(); state = !state; pros::delay(500); }
@@ -22,7 +22,7 @@ void Pneumatics::run() {
 }
 
 bool Pneumatics::detectMogo() {
-  return (distance_sensor.get() < 25);
+  return (distance_sensor.get() < 23);
 }
 
 void Pneumatics::toggleLatch() { LatchControl.toggle(); }

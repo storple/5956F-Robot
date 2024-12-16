@@ -8,7 +8,7 @@ using namespace Robot::Globals;
 
 // Screen and UI objects
 lv_obj_t *auton_select_screen, *info_label;
-lv_obj_t *field_btns[4];
+lv_obj_t *field_btns[5];
 
 lv_obj_t *x_label, *y_label, *theta_label;
 
@@ -26,7 +26,7 @@ void update_fields() {
     lv_style_set_bg_opa(&selected_style, LV_OPA_100);
     lv_style_set_bg_opa(&not_selected_style, LV_OPA_40);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         lv_obj_t *btn = field_btns[i];
         if (i == active_route) {
             lv_obj_add_style(btn, &selected_style, 0);
@@ -42,10 +42,11 @@ void set_info_label(const char* s) {
 }
 
 // event callbacks 
-void red_left_cb(lv_event_t *e) { set_info_label("red left"); active_route = RED_NEG; update_fields(); }
-void red_right_cb(lv_event_t *e) { set_info_label("red right"); active_route = RED_POS; update_fields(); }
-void blue_left_cb(lv_event_t *e) { set_info_label("blue left"); active_route = BLUE_NEG; update_fields(); }
-void blue_right_cb(lv_event_t *e) { set_info_label("blue right"); active_route = BLUE_POS; update_fields(); }
+void red_neg_cb(lv_event_t *e) { set_info_label("red neg"); active_route = RED_NEG; update_fields(); }
+void red_pos_cb(lv_event_t *e) { set_info_label("red pos"); active_route = RED_POS; update_fields(); }
+void blue_neg_cb(lv_event_t *e) { set_info_label("blue neg"); active_route = BLUE_NEG; update_fields(); }
+void blue_pos_cb(lv_event_t *e) { set_info_label("blue pos"); active_route = BLUE_POS; update_fields(); }
+void skills_cb(lv_event_t *e) { set_info_label("skills"); active_route = SKILLS; update_fields(); }
 
 // Helper function to create buttons
 lv_obj_t *make_button(lv_obj_t *holder, int posX, int posY, int width, int height, const char* s, bool red, void (*callback)(lv_event_t *)) {
@@ -83,10 +84,11 @@ void runScreen() {
     lv_obj_align(info_label, LV_ALIGN_TOP_MID, 0, 10);
 
     // Create buttons 
-    field_btns[0] = make_button(auton_select_screen, 50, 50, 100, 50, "Red Left", true, red_left_cb);
-    field_btns[1] = make_button(auton_select_screen, 50, 120, 100, 50, "Red Right", true, red_right_cb);
-    field_btns[2] = make_button(auton_select_screen, 200, 50, 100, 50, "Blue Left", false, blue_left_cb);
-    field_btns[3] = make_button(auton_select_screen, 200, 120, 100, 50, "Blue Right", false, blue_right_cb);
+    field_btns[0] = make_button(auton_select_screen, 50, 50, 100, 50, "Red Neg", true, red_neg_cb);
+    field_btns[1] = make_button(auton_select_screen, 50, 120, 100, 50, "Red Pos", true, red_pos_cb);
+    field_btns[2] = make_button(auton_select_screen, 200, 50, 100, 50, "Blue Neg", false, blue_neg_cb);
+    field_btns[3] = make_button(auton_select_screen, 200, 120, 100, 50, "Blue Pos", false, blue_pos_cb);
+    field_btns[4] = make_button(auton_select_screen, 350, 50, 100, 50, "Skills", false, skills_cb);
 
 
     // Create labels for displaying position

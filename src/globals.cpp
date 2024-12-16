@@ -55,14 +55,17 @@ pros::Imu inertial_sensor(4);
 pros::Optical color_sensor(15);
 pros::Distance distance_sensor(13);
 pros::Distance wall_sensor(14);
+pros::Distance wall_sensor_back(8);
 
-pros::Rotation horizontalEnc(1);
+pros::Rotation horizontalEnc(-1);
 pros::Rotation verticalEnc(-2);
-lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, 0.5); // figure the offsets
-lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, -3.1353);
+
+// current offsets 2.9, 0.195
+lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -2.625); // figure the offsets
+lemlib::TrackingWheel vertical(&verticalEnc, 1.995, 0.1875);
 
 RobotSubsystems subsystem;
-AutonRoutes active_route = SKILLS;  // Default to NONE // red_left moveToPoint - red_right turnToHeading - blue_left JERRYIO path
+AutonRoutes active_route = TEST;  // Default to NONE // red_left moveToPoint - red_right turnToHeading - blue_left JERRYIO path
 
 bool useColorSort = false;
 int x = 5;
@@ -72,7 +75,7 @@ lemlib::Drivetrain drivetrain(
     &right_motors, // right motor group
     11.359375, // track width (inches)
     lemlib::Omniwheel::NEW_325,
-    450, // drivetrain rpm 
+    450, // drivetrain rpm   
     2 // horizontal drift is 2 (for now)
 );
 
@@ -121,7 +124,7 @@ lemlib::PID arm_pid(
 lemlib::PID wall_sensor_pid(
     0.2, // kP
     0, // kI
-    1, // kD
+    1 , // kD
     5, // integral anti windup range
     false // don't reset integral when sign of error flips
 );
