@@ -60,20 +60,22 @@ pros::Distance wall_sensor_back(8);
 pros::Rotation horizontalEnc(-1);
 pros::Rotation verticalEnc(-2);
 
-// current offsets 2.9, 0.195
-lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -2.625); // figure the offsets
-lemlib::TrackingWheel vertical(&verticalEnc, 1.995, 0.1875);
+// current offsets -2.625, 0.1675
+lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -2.9375); // figure the offsets
+lemlib::TrackingWheel vertical(&verticalEnc, 1.995, 0.03125);
 
 RobotSubsystems subsystem;
-AutonRoutes active_route = TEST;  // Default to NONE // red_left moveToPoint - red_right turnToHeading - blue_left JERRYIO path
+AutonRoutes active_route = BLUE_NEG;
 
+bool playingRedSide = false;
 bool useColorSort = false;
-int x = 5;
+bool useAutoClamp = true;
+bool mogoGoalState = false;
 
 lemlib::Drivetrain drivetrain(
     &left_motors, // left motor group
     &right_motors, // right motor group
-    11.359375, // track width (inches)
+    11.3125, // track width (inches)
     lemlib::Omniwheel::NEW_325,
     450, // drivetrain rpm   
     2 // horizontal drift is 2 (for now)
@@ -93,23 +95,23 @@ lemlib::ControllerSettings lateral_controller{
     0,    // KI 
     8,    // kD
     0,    // Anti Windup
-    0,    // smallErrorRange
-    0,  // smallErrorTimeout
-    0,    // largeErrorRange             
-    0,  // largeErrorTimeout
+    1,    // smallErrorRange
+    100,  // smallErrorTimeout
+    3,    // largeErrorRange             
+    500,  // largeErrorTimeout
     0    // slew rate
 };
 
 // turning PID
 lemlib::ControllerSettings angular_controller{
-    2,  // kP
+    3,  // kP
     0,     // kI
-    8,  // kD
+    18, // kD
     0,     // Anti Windup
-    0,     // smallErrorRange
-    0,   // smallErrorTimeout
-    0,     // largeErrorRange
-    0,   // largeErrorTimeout
+    1,     // smallErrorRange
+    100,   // smallErrorTimeout
+    3,     // largeErrorRange
+    500,   // largeErrorTimeout
     0      // slew rate
 };
 
@@ -123,6 +125,14 @@ lemlib::PID arm_pid(
 
 lemlib::PID wall_sensor_pid(
     0.2, // kP
+    0, // kI
+    1 , // kD
+    5, // integral anti windup range
+    false // don't reset integral when sign of error flips
+);
+
+lemlib::PID distance_sensor_pid(
+    0.34, // kP
     0, // kI
     1 , // kD
     5, // integral anti windup range

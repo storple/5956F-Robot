@@ -4,11 +4,7 @@
 using namespace Robot;
 using namespace Robot::Globals;
 
-Intake::Intake()
-{
-	bool currentlyOn = false;
-	bool playingRed = false;
-}
+Intake::Intake() { }
 
 bool Intake::detectRing() {
 	return (color_sensor.get_proximity() >= 230);
@@ -20,7 +16,7 @@ bool Intake::detectBadColor() {
 	double hue = color_sensor.get_hue();
 	double proximity = color_sensor.get_proximity();
 
-	return ((detectRing()) and ((0 <= hue and hue <= 50 and !playingRed) or (200 <= hue and hue <= 300 and playingRed)));
+	return ((detectRing()) and ((0 <= hue and hue <= 50 and !playingRedSide) or (200 <= hue and hue <= 300 and playingRedSide)));
 	
 }
 
@@ -57,7 +53,7 @@ void Intake::run()
 		IntakeMotor.brake();
 	}
 
-	pros::delay(10);
+	pros::delay(20);
 }
 
 void Intake::run(int msec) {

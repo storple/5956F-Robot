@@ -22,6 +22,7 @@ public:
 	 */
 	void AutoDrive();
 	void WallSensorPID(float target_distance, int timeout, bool back);
+	void ClampPID(float target_distance, int timeout, bool followthrough);
 
 private:
 	void RedNegative();

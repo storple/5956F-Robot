@@ -6,7 +6,7 @@ using namespace Robot::Globals;
 
 Arm::Arm() : target_angle(1400), pid_active(false) { ; }
 
-void Arm::PID(float target_angle) {
+void Arm::PID(float target_angle, int timeout) {
 
     int start_time = pros::millis();
 
@@ -29,7 +29,7 @@ void Arm::PID(float target_angle) {
             break;
         }
         
-        if (pros::millis() - start_time > 500) {
+        if (pros::millis() - start_time > timeout) {
             ArmMotor1.move(0);
             ArmMotor2.move(0);
             break;
@@ -90,7 +90,7 @@ void Arm::run() {
         // Set targets based on the state
         switch (currentState) {
             case 0:
-                setTarget(4050);
+                setTarget(3950);
                 break;
             case 1:
                 setTarget(15400);
@@ -100,11 +100,11 @@ void Arm::run() {
         // Manual control after PID has completed
         if (!pid_active) {
             if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-                ArmMotor1.move(40);
-                ArmMotor2.move(40);
+                ArmMotor1.move(127);
+                ArmMotor2.move(127);
             } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-                ArmMotor1.move(-40);
-                ArmMotor2.move(-40);
+                ArmMotor1.move(-127);
+                ArmMotor2.move(-127);
             } else {
                 ArmMotor1.brake();
                 ArmMotor2.brake();

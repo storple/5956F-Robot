@@ -10,7 +10,6 @@ class Intake {
 public:
 
 	bool currentlyOn;
-	bool playingRed;
 	
 	/**
 	 * @brief Runs the main function of the intake system.

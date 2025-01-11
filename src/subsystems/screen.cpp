@@ -42,10 +42,10 @@ void set_info_label(const char* s) {
 }
 
 // event callbacks 
-void red_neg_cb(lv_event_t *e) { set_info_label("red neg"); active_route = RED_NEG; update_fields(); }
-void red_pos_cb(lv_event_t *e) { set_info_label("red pos"); active_route = RED_POS; update_fields(); }
-void blue_neg_cb(lv_event_t *e) { set_info_label("blue neg"); active_route = BLUE_NEG; update_fields(); }
-void blue_pos_cb(lv_event_t *e) { set_info_label("blue pos"); active_route = BLUE_POS; update_fields(); }
+void red_neg_cb(lv_event_t *e) { set_info_label("red neg"); active_route = RED_NEG; playingRedSide = true; update_fields(); }
+void red_pos_cb(lv_event_t *e) { set_info_label("red pos"); active_route = RED_POS; playingRedSide = true; update_fields(); }
+void blue_neg_cb(lv_event_t *e) { set_info_label("blue neg"); active_route = BLUE_NEG; playingRedSide = false; update_fields(); }
+void blue_pos_cb(lv_event_t *e) { set_info_label("blue pos"); active_route = BLUE_POS; playingRedSide = false; update_fields(); }
 void skills_cb(lv_event_t *e) { set_info_label("skills"); active_route = SKILLS; update_fields(); }
 
 // Helper function to create buttons

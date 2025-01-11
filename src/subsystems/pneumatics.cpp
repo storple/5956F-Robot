@@ -8,13 +8,13 @@ Pneumatics::Pneumatics() { ; }
 
 void Pneumatics::run() {
 
-  // if (detectMogo() && !state) {
-  //   Pneumatics::toggleLatch();
-  //   state = true;
-  // }
+  if (useAutoClamp && detectMogo() && !mogoGoalState) {
+    Pneumatics::toggleLatch();
+    mogoGoalState = true;
+  }
 
-
-  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) { Pneumatics::toggleLatch(); state = !state; pros::delay(500); }
+  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) { mogoGoalState = !mogoGoalState; }
+  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) { Pneumatics::toggleLatch(); mogoGoalState = !mogoGoalState; pros::delay(500); }
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) { Pneumatics::toggleDoinker(); }
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) { Pneumatics::toggleIntakeLift(); }
 
@@ -22,7 +22,7 @@ void Pneumatics::run() {
 }
 
 bool Pneumatics::detectMogo() {
-  return (distance_sensor.get() < 23);
+  return (distance_sensor.get() < 20);
 }
 
 void Pneumatics::toggleLatch() { LatchControl.toggle(); }

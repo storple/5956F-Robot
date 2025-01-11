@@ -61,8 +61,10 @@ extern RobotSubsystems subsystem;
 enum AutonRoutes { RED_NEG, RED_POS, BLUE_NEG, BLUE_POS, SKILLS, NONE, TEST };
 extern AutonRoutes active_route;
 
+extern bool playingRedSide;
 extern bool useColorSort;
-extern int x;
+extern bool useAutoClamp;
+extern bool mogoGoalState;
 
 // forward/backward PID
 extern lemlib::ControllerSettings lateral_controller;
@@ -72,6 +74,7 @@ extern lemlib::ControllerSettings angular_controller;
 
 extern lemlib::PID arm_pid;
 extern lemlib::PID wall_sensor_pid;
+extern lemlib::PID distance_sensor_pid;
 
 // curvature
 extern lemlib::ExpoDriveCurve steer_curve;

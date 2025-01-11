@@ -5,8 +5,6 @@ namespace Robot {
 
 class Pneumatics {
  public:
-
-  bool state = false;
   
   void run();
 
