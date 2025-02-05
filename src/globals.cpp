@@ -65,7 +65,7 @@ lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -2.9375); // figure the 
 lemlib::TrackingWheel vertical(&verticalEnc, 1.995, 0.03125);
 
 RobotSubsystems subsystem;
-AutonRoutes active_route = BLUE_NEG;
+AutonRoutes active_route = SKILLS;
 
 bool playingRedSide = false;
 bool useColorSort = false;
@@ -91,14 +91,14 @@ lemlib::OdomSensors sensors(
 
 // forward/backward PID
 lemlib::ControllerSettings lateral_controller{
-    6,    // kP
+    4.5,    // kP
     0,    // KI 
-    8,    // kD
+    4,    // kD
     0,    // Anti Windup
-    1,    // smallErrorRange
-    100,  // smallErrorTimeout
-    3,    // largeErrorRange             
-    500,  // largeErrorTimeout
+    0,    // smallErrorRange
+    0,  // smallErrorTimeout
+    0,    // largeErrorRange             
+    0,  // largeErrorTimeout
     0    // slew rate
 };
 
@@ -108,12 +108,41 @@ lemlib::ControllerSettings angular_controller{
     0,     // kI
     18, // kD
     0,     // Anti Windup
-    1,     // smallErrorRange
-    100,   // smallErrorTimeout
-    3,     // largeErrorRange
-    500,   // largeErrorTimeout
+    0,     // smallErrorRange
+    0,   // smallErrorTimeout
+    0,     // largeErrorRange
+    0,   // largeErrorTimeout
     0      // slew rate
 };
+
+/*
+// forward/backward PID
+lemlib::ControllerSettings lateral_controller{
+    6,    // kP
+    0,    // KI 
+    8,    // kD
+    0,    // Anti Windup
+    0,    // smallErrorRange
+    0,  // smallErrorTimeout
+    0,    // largeErrorRange             
+    0,  // largeErrorTimeout
+    0    // slew rate
+};
+
+// turning PID
+lemlib::ControllerSettings angular_controller{
+    3,  // kP
+    0,     // kI
+    18, // kD
+    0,     // Anti Windup
+    0,     // smallErrorRange
+    0,   // smallErrorTimeout
+    0,     // largeErrorRange
+    0,   // largeErrorTimeout
+    0      // slew rate
+};
+*/
+
 
 lemlib::PID arm_pid(
     0.01, // kP

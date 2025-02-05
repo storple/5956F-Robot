@@ -21,15 +21,19 @@ public:
 	 * value indicating whether to use autonomous mode.
 	 */
 	void AutoDrive();
+	void moveMotors(int power, int timeout);
 	void WallSensorPID(float target_distance, int timeout, bool back);
 	void ClampPID(float target_distance, int timeout, bool followthrough);
+	void LimitSwitchIntake(int timeout);
+	float distanceResetX();
 
 private:
 	void RedNegative();
-	void RedPositive();
 	void BlueNegative();
+	void RedPositive();
 	void BluePositive();
-	void BluePositiveGoal();
+	void RedGoalRush();
+	void BlueGoalRush();
 	void Test();
 	void Skills();
 

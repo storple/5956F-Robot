@@ -6,6 +6,7 @@ using namespace Robot::Globals;
 
 Arm::Arm() : target_angle(1400), pid_active(false) { ; }
 
+
 void Arm::PID(float target_angle, int timeout) {
 
     int start_time = pros::millis();
@@ -40,64 +41,77 @@ void Arm::PID(float target_angle, int timeout) {
 }
 
 void Arm::update() {
+    static int start_time = 0;
     if (pid_active) {
+        if (start_time == 0) { 
+            start_time = pros::millis();
+        }
+
         long double current_angle = arm_sensor.get_angle();
         long double error = target_angle - current_angle;
 
-        // Compute the PID output
         double output = arm_pid.update((double)error);
 
-        // Apply the output to the motor
         ArmMotor1.move(output);
         ArmMotor2.move(output);
 
-        // Stop PID if within tolerance
-        if (fabs(error) < 750) {
+        if (fabs(error) < 200 || pros::millis() - start_time > 800) {
             ArmMotor1.move(0);
             ArmMotor2.move(0);
             pid_active = false; // Disable PID control
+            start_time = 0;     // Reset start_time for the next activation
         }
     }
 
     pros::delay(20);
 }
 
-void Arm::setTarget(float target) {
-    target_angle = target;
+/*
+    arm states
+    -1: down
+    0: prep
+    1: score/up
+*/
+void Arm::setArmState(int mode) {
+    if (mode == -1) {
+        target_angle = 1600;
+    } 
+    else if (mode == 0) {
+        target_angle = 3400;
+    }
+    else if (mode == 1) {
+        target_angle = 15400;
+    }
+
     pid_active = true;
+
 }
 
 void Arm::run() {
-    // Handle input for toggling autoMode
+
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
         autoMode = !autoMode;
 
         if (!autoMode) {
-            // Enter manual mode, but first move to position 1400
-            setTarget(1400);
-            pid_active = true; // Enable PID to reach the position
+            setArmState(-1);
+            pid_active = true; 
         } else {
-            currentState = 0; // Start at default autoMode state
+            currentState = 0; 
         }
     }
 
     if (autoMode) {
-        // Cycle through states in autoMode
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
-            currentState = (currentState + 1) % 2; // Toggle between 0 and 1
+        // cycle through states in autoMode
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+            pid_active = false;
+            ArmMotor1.move(127);
+            ArmMotor2.move(127);
         }
-
-        // Set targets based on the state
-        switch (currentState) {
-            case 0:
-                setTarget(3950);
-                break;
-            case 1:
-                setTarget(15400);
-                break;
+        else {
+            setArmState(0);
         }
     } else {
-        // Manual control after PID has completed
+        // manual control after PID has completed
         if (!pid_active) {
             if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
                 ArmMotor1.move(127);

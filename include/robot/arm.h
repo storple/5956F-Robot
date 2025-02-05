@@ -27,7 +27,7 @@ class Arm {
      * 
      * @param target The desired target angle.
      */
-    void setTarget(float target);
+    void setArmState(int mode);
     void PID(float target_angle, int timeout);
 
   private:

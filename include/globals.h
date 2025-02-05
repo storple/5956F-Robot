@@ -58,7 +58,7 @@ struct RobotSubsystems {
 
 extern RobotSubsystems subsystem;
 
-enum AutonRoutes { RED_NEG, RED_POS, BLUE_NEG, BLUE_POS, SKILLS, NONE, TEST };
+enum AutonRoutes { RED_NEG, RED_POS, RED_GOALRUSH, BLUE_NEG, BLUE_POS, BLUE_GOALRUSH, SKILLS, NONE, TEST };
 extern AutonRoutes active_route;
 
 extern bool playingRedSide;

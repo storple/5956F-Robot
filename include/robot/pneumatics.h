@@ -5,7 +5,7 @@ namespace Robot {
 
 class Pneumatics {
  public:
-  
+
   void run();
 
   Pneumatics();
@@ -15,5 +15,7 @@ class Pneumatics {
   void toggleDoinker();
   void toggleIntakeLift();
 
+ private:
+  bool charged = false;
 };
 }  // namespace Robot
