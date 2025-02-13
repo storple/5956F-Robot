@@ -8,7 +8,7 @@ using namespace Robot::Globals;
 
 // Screen and UI objects
 lv_obj_t *auton_select_screen, *info_label;
-lv_obj_t *field_btns[8];
+lv_obj_t *field_btns[10];
 
 lv_obj_t *x_label, *y_label, *theta_label;
 
@@ -26,7 +26,7 @@ void update_fields() {
     lv_style_set_bg_opa(&selected_style, LV_OPA_100);
     lv_style_set_bg_opa(&not_selected_style, LV_OPA_40);
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 10; i++) {
         lv_obj_t *btn = field_btns[i];
         if (i == active_route) {
             lv_obj_add_style(btn, &selected_style, 0);
@@ -48,6 +48,8 @@ void blue_neg_cb(lv_event_t *e) { set_info_label("blue neg"); active_route = BLU
 void blue_pos_cb(lv_event_t *e) { set_info_label("blue pos"); active_route = BLUE_POS; playingRedSide = false; update_fields(); }
 void red_goal_cb(lv_event_t *e) { set_info_label("red goal"); active_route = RED_GOALRUSH; playingRedSide = true; update_fields(); }
 void blue_goal_cb(lv_event_t *e) { set_info_label("blue goal"); active_route = BLUE_GOALRUSH; playingRedSide = false; update_fields(); }
+void red_ring_cb(lv_event_t *e) { set_info_label("red ring"); active_route = RED_RING; playingRedSide = true; update_fields(); }
+void blue_ring_cb(lv_event_t *e) { set_info_label("blue ring"); active_route = BLUE_RING; playingRedSide = false; update_fields();}
 void skills_cb(lv_event_t *e) { set_info_label("skills"); active_route = SKILLS; update_fields(); }
 void none_cb(lv_event_t *e) { set_info_label("none"); active_route = NONE; update_fields(); }
 
@@ -103,11 +105,13 @@ void runScreen() {
     field_btns[0] = make_button(auton_select_screen, 50, 50, 50, 50, "Neg", "red", red_neg_cb);
     field_btns[1] = make_button(auton_select_screen, 120, 50, 50, 50, "Pos", "red", red_pos_cb);
     field_btns[2] = make_button(auton_select_screen, 190, 50, 50, 50, "Goal", "red", red_goal_cb);
-    field_btns[3] = make_button(auton_select_screen, 50, 120, 50, 50, "Neg", "blue", blue_neg_cb);
-    field_btns[4] = make_button(auton_select_screen, 120, 120, 50, 50, "Pos", "blue", blue_pos_cb);
-    field_btns[5] = make_button(auton_select_screen, 190, 120, 50, 50, "Goal", "blue", blue_goal_cb);
-    field_btns[6] = make_button(auton_select_screen, 270, 50, 50, 50, "Skills", "gray", skills_cb);
-    field_btns[7] = make_button(auton_select_screen, 270, 120, 50, 50, "None", "gray", none_cb);
+    field_btns[3] = make_button(auton_select_screen, 260, 50, 50, 50, "Ring", "red", red_ring_cb);
+    field_btns[4] = make_button(auton_select_screen, 50, 120, 50, 50, "Neg", "blue", blue_neg_cb);
+    field_btns[5] = make_button(auton_select_screen, 120, 120, 50, 50, "Pos", "blue", blue_pos_cb);
+    field_btns[6] = make_button(auton_select_screen, 190, 120, 50, 50, "Goal", "blue", blue_goal_cb);
+    field_btns[7] = make_button(auton_select_screen, 260, 120, 50, 50, "Ring", "blue", blue_ring_cb);
+    field_btns[8] = make_button(auton_select_screen, 330, 50, 50, 50, "Skills", "gray", skills_cb);
+    field_btns[9] = make_button(auton_select_screen, 330, 120, 50, 50, "None", "gray", none_cb);
 
 
     // x_label = lv_label_create(auton_select_screen);

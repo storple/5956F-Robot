@@ -31,6 +31,7 @@ extern pros::MotorGroup drive_;
 extern pros::adi::Pneumatics LatchControl;
 extern pros::adi::Pneumatics IntakeLift;
 extern pros::adi::Pneumatics Doinker;
+extern pros::adi::Pneumatics Doinker2;
 
 extern pros::adi::DigitalIn LimitSwitch;
 
@@ -44,6 +45,7 @@ extern pros::Optical color_sensor;
 extern pros::Distance distance_sensor;
 extern pros::Distance wall_sensor;
 extern pros::Distance wall_sensor_back;
+extern pros::Distance wall_sensor_side;
 
 /**
  * @brief Structure that holds instances of all robot subsystems.
@@ -58,7 +60,7 @@ struct RobotSubsystems {
 
 extern RobotSubsystems subsystem;
 
-enum AutonRoutes { RED_NEG, RED_POS, RED_GOALRUSH, BLUE_NEG, BLUE_POS, BLUE_GOALRUSH, SKILLS, NONE, TEST };
+enum AutonRoutes { RED_NEG, RED_POS, RED_GOALRUSH, RED_RING, BLUE_NEG, BLUE_POS, BLUE_GOALRUSH, BLUE_RING, SKILLS, NONE, TEST };
 extern AutonRoutes active_route;
 
 extern bool playingRedSide;

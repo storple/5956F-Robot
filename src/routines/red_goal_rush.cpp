@@ -34,6 +34,7 @@ void Autonomous::RedGoalRush() {
     if (distance_sensor.get() < 1600) {
         ClampPID(10, 1750, false);
     }
+    /*
     subsystem.intake.toggle();
     pros::delay(250);
     subsystem.intake.toggle();
@@ -53,6 +54,7 @@ void Autonomous::RedGoalRush() {
 	subsystem.intake.toggle();
     subsystem.pneumatics.toggleIntakeLift();
     chassis.moveToPoint(40, 24, 1000, {.forwards=false, .maxSpeed=50}, false);
+    */
 }
 
 /*

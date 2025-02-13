@@ -110,11 +110,44 @@ void Autonomous::LimitSwitchIntake(int timeout) {
 }
 
 
+// 5 inches
+
+std::pair<float, float> distanceReset() {
+	// constants
+    constexpr float NORTH_WALL = 72.0;       // y-coordinate of north wall (inches)
+    constexpr float WEST_WALL  = -72.0;        // x-coordinate of west wall (inches)
+    constexpr float SENSOR_OFFSET_FRONT = 6.125; // front sensor offset from robot center (inches)
+    constexpr float SENSOR_OFFSET_LEFT  = 5; // left sensor offset from robot center (inches)
+
+    float d_front = wall_sensor_back.get() / 25.4;  
+    float d_left  = wall_sensor.get()  / 25.4;
+
+    float theta = chassis.getPose().theta * (M_PI / 180.0);
+
+    float effective_front = (SENSOR_OFFSET_FRONT + d_front) * cos(theta);
+    float effective_left  = (SENSOR_OFFSET_LEFT  + d_left)  * cos(theta);
+
+    float robot_y = NORTH_WALL - effective_front;
+    float robot_x = WEST_WALL  + effective_left;     
+
+    return { robot_x, robot_y };
+}
+
 float Autonomous::distanceResetX() {
 	constexpr float SENSOR_OFFSET_X = 6.125; // offset in inches
 
     float measured_distance = wall_sensor_back.get() / 25.4; // convert from mm to inches
-    float adjusted_distance = 72 - (measured_distance + SENSOR_OFFSET_X);
+    float theta = chassis.getPose().theta * (M_PI / 180.0);
+	float adjusted_distance = 72 - ((measured_distance + SENSOR_OFFSET_X) * sin(theta));
+
+    return adjusted_distance;
+}
+
+float Autonomous::distanceResetY() {
+	constexpr float SENSOR_OFFSET_Y = 4.90625; // offset in inches
+
+    float measured_distance = wall_sensor.get() / 25.4; // convert from mm to inches
+    float adjusted_distance = -24 + (measured_distance + SENSOR_OFFSET_Y);
 
     return adjusted_distance;
 }
@@ -139,6 +172,12 @@ void Autonomous::AutoDrive()
 			break;
 		case (BLUE_GOALRUSH):
 			BlueGoalRush();
+			break;
+		case (RED_RING):
+			RedRingRush();
+			break;
+		case (BLUE_RING):
+			BlueRingRush();
 			break;
 		case (TEST):
 			Test();

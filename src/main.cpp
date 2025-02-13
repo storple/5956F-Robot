@@ -74,6 +74,8 @@ void autonomous() {
  * Runs the operator control code. 
  */
 void opcontrol() {
+   
+   // autonomous();
 
     if (subsystem.pneumatics.detectMogo()) 
         mogoGoalState = true;

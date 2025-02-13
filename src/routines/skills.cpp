@@ -87,6 +87,10 @@ void Autonomous::Skills()
 	subsystem.intake.toggle();
 	chassis.turnToPoint(48, -12, 750, {.maxSpeed=80});
 	chassis.moveToPoint(48, -12, 2000, {.maxSpeed=60});
+	chassis.waitUntilDone();
+	chassis.setPose(chassis.getPose().x, distanceResetY(),chassis.getPose().theta);
+	controller.print(0, 0, "%ld", distanceResetX());
+	pros::delay(50); 
 	chassis.turnToPoint(60, 2, 750, {.maxSpeed=80});
 	chassis.moveToPoint(60, 2, 1500, {.maxSpeed=60});
 	// chassis.turnToPoint(64, -12, 750, {.forwards=false, .maxSpeed=80});

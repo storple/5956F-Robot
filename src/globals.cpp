@@ -45,6 +45,7 @@ pros::MotorGroup right_motors({RightFront.get_port(), RightMid.get_port(),
                               RightBack.get_port()}, pros::MotorGearset::blue);
 
 pros::adi::Pneumatics Doinker('A', false);
+pros::adi::Pneumatics Doinker2('E', false);
 pros::adi::Pneumatics LatchControl('B', false);
 pros::adi::Pneumatics IntakeLift('C', false); // TODO: port b will be IntakeLift, port C will be doinker, port D will be LimitSwitch
 
@@ -56,19 +57,20 @@ pros::Optical color_sensor(15);
 pros::Distance distance_sensor(13);
 pros::Distance wall_sensor(14);
 pros::Distance wall_sensor_back(8);
+pros::Distance wall_sensor_side(6);
 
 pros::Rotation horizontalEnc(-1);
 pros::Rotation verticalEnc(-2);
 
-// current offsets -2.625, 0.1675
+// current offsets -2.625, 0.1675 
 lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -2.9375); // figure the offsets
 lemlib::TrackingWheel vertical(&verticalEnc, 1.995, 0.03125);
 
 RobotSubsystems subsystem;
-AutonRoutes active_route = SKILLS;
+AutonRoutes active_route = RED_RING;
 
 bool playingRedSide = false;
-bool useColorSort = false;
+bool useColorSort = false;  
 bool useAutoClamp = true;
 bool mogoGoalState = false;
 

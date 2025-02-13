@@ -27,5 +27,6 @@ bool Pneumatics::detectMogo() {
 
 void Pneumatics::toggleLatch() { LatchControl.toggle(); }
 void Pneumatics::toggleDoinker() { Doinker.toggle(); }
+void Pneumatics::toggleDoinker2() { Doinker2.toggle(); }
 void Pneumatics::toggleIntakeLift() { IntakeLift.toggle(); }
 
