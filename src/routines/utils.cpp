@@ -54,17 +54,7 @@ struct generated_coordinate {
 };
 
 // returns possible x and y coordinates of expected movement in inches
-generated_coordinate get_expected_coordinates(lemlib::Pose pose, float angle,floatdistance_sensor_reading reading){
-    const float original_cosa = cos(angle);
-    const float original_sina = sin(angle);
-
-    const float rotated_x_offset = reading.x_offset * original_cosa - reading.y_offset * original_sina;
-    const float rotated_y_offset = reading.y_offset * original_cosa + reading.x_offset * original_sina;
-
-    const float current_x_offset = rotated_x_offset + pose.x;
-    const float current_y_offset = rotated_y_offset + pose.y;
-
-
+generated_coordinate get_expected_coordinates(lemlib::Pose pose, float angle, distance_sensor_reading reading){
     const float offset_angle = (angle + reading.angle_offset) * (M_PI / 180);
 
     const float cosa = cos(offset_angle);
@@ -85,10 +75,10 @@ generated_coordinate get_expected_coordinates(lemlib::Pose pose, float angle,flo
     }
     return {x,y,reading.orientation};
 }
+
 bool outsideOfField(float x,float y){
     return x > HALF_WALL_LENGTH || x < -HALF_WALL_LENGTH || y < -HALF_WALL_LENGTH || y > HALF_WALL_LENGTH;
 }
-
 
 // sets the distance
 // returns false if it was not able to reset position
@@ -102,14 +92,11 @@ bool distance_reset_position(){
     std::vector<distance_sensor_reading> readings;
 
     for(auto && sensor : distance_sensors){
-        const int measured_distance = sensor->get();
+        const int measured_distance = sensor.sensor->get();
         // here we declare we want to use this distance sensor, only if 
         // there is a measurement and the measurement is accurate
-        if(// exit conditions
-             measured_distance != 9999
-             // &&
-            ) {
-            if(sensor->orientation == HORIZONTAL){
+        if(measured_distance != 9999 && measured_distance > 0) {
+            if(sensor.orientation == HORIZONTAL){
                 horizontal_sensors++;
             }
             else{
@@ -117,10 +104,10 @@ bool distance_reset_position(){
             }
             readings.emplace_back(
                     measured_distance / 25.4,
-                    sensor->orientation,
-                    sensor->x_offset,
-                    sensor->y_offset,
-                    sensor->angle_offset
+                    sensor.orientation,
+                    sensor.x_offset,
+                    sensor.y_offset,
+                    sensor.angle_offset
                     );
         }
     }
@@ -132,7 +119,7 @@ bool distance_reset_position(){
     std::vector<generated_coordinate> generated_coordinates;
 
     for(auto & reading : readings){
-        const generated_coordinate generated = get_expected_coordinates(angle,reading);
+        const generated_coordinate generated = get_expected_coordinates(current_pose, angle, reading);
         generated_coordinates.push_back(generated);
     }
     
@@ -164,8 +151,17 @@ bool distance_reset_position(){
         fx += coordinate.first;
         fy += coordinate.second;
     }
+
+    if(final_coordinates.empty()){
+        return false;
+    }
+
     float ffx = fx / static_cast<float>(final_coordinates.size());
     float ffy = fy / static_cast<float>(final_coordinates.size());
+
+    // shift y coordinate by 48 inches
+    ffy += 48;
+
     chassis.setPose(ffx,ffy,chassis.getPose().theta);
 
     return true;
