@@ -74,10 +74,10 @@ void Arm::update() {
 */
 void Arm::setArmState(int mode) {
     if (mode == -1) {
-        target_angle = 1600;
+        target_angle = 1000;
     } 
     else if (mode == 0) {
-        target_angle = 3400;
+        target_angle = 3200;
     }
     else if (mode == 1) {
         target_angle = 15400;
@@ -103,7 +103,7 @@ void Arm::run() {
     if (autoMode) {
         // cycle through states in autoMode
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-            pid_active = false;
+            pid_active = false; 
             ArmMotor1.move(127);
             ArmMotor2.move(127);
         }

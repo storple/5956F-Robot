@@ -74,7 +74,7 @@ void Autonomous::ClampPID(float target_distance, int timeout, bool followthrough
         left_motors.move(output);
 		right_motors.move(output);
 
-        if ((fabs(error) < 15) or (pros::millis() - start_time > timeout)) { 
+        if ((fabs(error) < 13) or (pros::millis() - start_time > timeout)) { 
 			if (followthrough) {
 				left_motors.move(-60);
 				right_motors.move(-60);
@@ -137,8 +137,9 @@ float Autonomous::distanceResetX() {
 	constexpr float SENSOR_OFFSET_X = 6.125; // offset in inches
 
     float measured_distance = wall_sensor_back.get() / 25.4; // convert from mm to inches
-    float theta = chassis.getPose().theta * (M_PI / 180.0);
-	float adjusted_distance = 72 - ((measured_distance + SENSOR_OFFSET_X) * sin(theta));
+	float adjusted_distance = 70.4 - ((measured_distance+SENSOR_OFFSET_X));
+    // float theta = (90-chassis.getPose().theta) * (M_PI / 180.0);
+	// float adjusted_distance = 72 - ((measured_distance + SENSOR_OFFSET_X) * cos(theta));
 
     return adjusted_distance;
 }

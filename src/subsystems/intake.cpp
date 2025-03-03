@@ -25,9 +25,9 @@ bool Intake::detectBadColor() {
 void Intake::run()
 {
 
-	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-		useColorSort = !useColorSort;
-	}
+	// if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+	// 	useColorSort = !useColorSort;
+	// }
 
 	if (useColorSort and detectBadColor()) {
 		

@@ -7,13 +7,17 @@ using namespace Robot::Globals;
 void Autonomous::RedGoalRush() {
 
     chassis.setPose(36, -1.5, 16);
+
+    ArmMotor1.move(-20);
+    ArmMotor2.move(-20);
+
     subsystem.intake.toggle();
     subsystem.pneumatics.toggleDoinker();
-    chassis.moveToPoint(47, 30, 950);
-    pros::delay(850);
-    subsystem.intake.toggle();
-    chassis.waitUntil(30);
+    chassis.moveToPoint(47, 30, 950, {.minSpeed=80});
+    pros::delay(750);
     subsystem.pneumatics.toggleDoinker();
+    pros::delay(100);
+    subsystem.intake.toggle();
     chassis.moveToPoint(52, 18, 1250, {.forwards=false, .minSpeed=60}, true);
     chassis.waitUntil(14);
     subsystem.pneumatics.toggleDoinker();
@@ -26,14 +30,20 @@ void Autonomous::RedGoalRush() {
     subsystem.intake.toggle();
     chassis.turnToPoint(24, -4, 500);
     chassis.moveToPoint(24, -4, 1250, {.maxSpeed=70});
-    chassis.moveToPose(30, -8, -45, 1000, {.maxSpeed=90}, false);
+    chassis.moveToPose(30, -8, 45, 1000, {.maxSpeed=90}, false);
     subsystem.pneumatics.toggleLatch();
     moveMotors(30, 100);
     chassis.turnToPoint(36, 24, 750, {.forwards=false});
     moveMotors(-40, 500);
-    if (distance_sensor.get() < 1600) {
-        ClampPID(10, 1750, false);
-    }
+    chassis.moveToPoint(42, 36, 1500, {.forwards=false, .maxSpeed=80}, false);
+    subsystem.pneumatics.toggleLatch();
+    chassis.turnToPoint(68, -16, 750, {.maxSpeed=80}, false);
+    moveMotors(80, 2250);
+    moveMotors(-40, 500);
+    moveMotors(40, 400);
+    moveMotors(-40, 300);
+
+    chassis.moveToPoint(48, 36, 1500, {.forwards = false, .maxSpeed=80});
     /*
     subsystem.intake.toggle();
     pros::delay(250);

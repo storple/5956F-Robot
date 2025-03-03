@@ -15,7 +15,8 @@ void Pneumatics::run() {
 
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) { mogoGoalState = !mogoGoalState; }
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) { Pneumatics::toggleLatch(); mogoGoalState = !mogoGoalState; pros::delay(500); }
-  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) { Pneumatics::toggleDoinker(); }
+  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) { Pneumatics::toggleDoinker2(); }
+  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) { Pneumatics::toggleDoinker(); }
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) { Pneumatics::toggleIntakeLift(); }
 
   pros::delay(20);

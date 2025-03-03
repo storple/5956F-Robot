@@ -45,9 +45,9 @@ pros::MotorGroup right_motors({RightFront.get_port(), RightMid.get_port(),
                               RightBack.get_port()}, pros::MotorGearset::blue);
 
 pros::adi::Pneumatics Doinker('A', false);
-pros::adi::Pneumatics Doinker2('E', false);
+pros::adi::Pneumatics Doinker2('C', false);
 pros::adi::Pneumatics LatchControl('B', false);
-pros::adi::Pneumatics IntakeLift('C', false); // TODO: port b will be IntakeLift, port C will be doinker, port D will be LimitSwitch
+pros::adi::Pneumatics IntakeLift('F', false); 
 
 pros::adi::DigitalIn LimitSwitch('D');
 
@@ -67,7 +67,7 @@ lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -2.9375); // figure the 
 lemlib::TrackingWheel vertical(&verticalEnc, 1.995, 0.03125);
 
 RobotSubsystems subsystem;
-AutonRoutes active_route = RED_RING;
+AutonRoutes active_route = SKILLS;
 
 bool playingRedSide = false;
 bool useColorSort = false;  

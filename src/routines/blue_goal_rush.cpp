@@ -6,13 +6,17 @@ using namespace Robot::Globals;
 
 void Autonomous::BlueGoalRush() {
     chassis.setPose(-36, -1.5, -16);
+
+    ArmMotor1.move(-20);
+    ArmMotor2.move(-20);
+
     subsystem.intake.toggle();
-    subsystem.pneumatics.toggleDoinker2 ();
-    chassis.moveToPoint(-47, 30, 950);
-    pros::delay(850);
-    subsystem.intake.toggle();
-    chassis.waitUntil(30);
     subsystem.pneumatics.toggleDoinker2();
+    chassis.moveToPoint(-47, 30, 950, {.minSpeed=80});
+    pros::delay(750);
+    subsystem.pneumatics.toggleDoinker2();
+    pros::delay(100);
+    subsystem.intake.toggle();
     chassis.moveToPoint(-52, 18, 1250, {.forwards=false, .minSpeed=60}, true);
     chassis.waitUntil(14);
     subsystem.pneumatics.toggleDoinker2();
@@ -30,9 +34,19 @@ void Autonomous::BlueGoalRush() {
     moveMotors(30, 100);
     chassis.turnToPoint(-36, 24, 750, {.forwards=false});
     moveMotors(-40, 500);
-    if (distance_sensor.get() < 1200) {
-        ClampPID(10, 1750, false);
-    }
+    chassis.moveToPoint(-42, 36, 1500, {.forwards=false, .maxSpeed=80}, false);
+    subsystem.pneumatics.toggleLatch();
+    chassis.turnToPoint(-68, -16, 750, {.maxSpeed=80}, false);
+    moveMotors(80, 2250);
+    moveMotors(-40, 500);
+    moveMotors(40, 400);
+    moveMotors(-40, 300);
+
+    chassis.moveToPoint(-48, 36, 1500, {.forwards = false, .maxSpeed=80});
+    
+    // if (distance_sensor.get() < 1200) {
+    //     ClampPID(10, 1750, false);
+    // }
    /* subsystem.intake.toggle();
     pros::delay(250);
     subsystem.intake.toggle();

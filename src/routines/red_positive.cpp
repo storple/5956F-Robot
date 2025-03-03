@@ -6,11 +6,17 @@ using namespace Robot::Globals;
 
 void Autonomous::RedPositive() {
 	chassis.setPose(12.5, -12, -135);
+
+
 	subsystem.arm.PID(15400, 500);
 	chassis.moveToPoint(24, 0, 1500, {.maxSpeed=50});
 	chassis.waitUntilDone();
 	pros::delay(300);
-	subsystem.arm.PID(1400, 500);
+
+	subsystem.arm.PID(500, 500);
+	ArmMotor1.move(-20);
+	ArmMotor2.move(-20);
+
 	chassis.turnToPoint(24, 24, 1500, {.forwards=false, .maxSpeed=50});
 
 	//backwards autoclamp
@@ -20,7 +26,7 @@ void Autonomous::RedPositive() {
 	chassis.turnToPoint(48, 24, 750, {.maxSpeed=70});
 	chassis.waitUntilDone();
 	subsystem.intake.toggle();
-	chassis.moveToPoint(44, 24, 1500, {.maxSpeed=70});
+	chassis.moveToPoint(46.5, 24, 1500, {.maxSpeed=70});
 	chassis.waitUntilDone();
 	pros::delay(750);
 
@@ -29,7 +35,7 @@ void Autonomous::RedPositive() {
 	chassis.turnToPoint(0, 0, 750, {.maxSpeed=60});
 	chassis.waitUntilDone();
 	subsystem.pneumatics.toggleIntakeLift();
-	chassis.moveToPoint(6, 2, 1500, {.maxSpeed=60}, false);
+	chassis.moveToPoint(6, 0, 1500, {.maxSpeed=60}, false);
 	subsystem.pneumatics.toggleIntakeLift();
 	chassis.moveToPoint(12, 0, 1000, {.forwards=false, .maxSpeed=70});
 	chassis.turnToPoint(0, 24, 750, {.maxSpeed=90});
