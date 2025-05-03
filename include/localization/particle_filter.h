@@ -35,9 +35,9 @@ namespace localization {
         Time last_update_time = 0_sec;
         Angle angle_change_since_update = 0_stDeg;
 
-        Length max_distance_since_update = 0.75_in;
-        Time max_update_interval = 2_sec;
-        Angle max_angle_change_since_update = 30_stDeg;
+        Length max_distance_since_update = 0_in;
+        Time max_update_interval = 1_sec;
+        Angle max_angle_change_since_update = 20_stDeg;
 
         Pose prediction = {0.0_m,0.0_m,0_stDeg};
 

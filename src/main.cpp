@@ -1,6 +1,6 @@
 #include "main.h"
 #include "pros/apix.h"
-// #include "localization_utils.h"
+#include "localization_utils.h"
 
 using namespace Robot;
 using namespace Robot::Globals;
@@ -42,6 +42,12 @@ void particle_filter_init(){
         // imu is not connected, should warn the user that this is the case
         printf("IMU IS NOT CONNECTED!!!!");
     }
+
+    Robot::Globals::horizontalEnc.set_data_rate(5);
+    Robot::Globals::verticalEnc.set_data_rate(5);
+
+    Robot::Globals::horizontalEnc.set_position(0);
+    Robot::Globals::verticalEnc.set_position(0);
 
 
     particle_filter.addSensor(&front_distance_model);
@@ -88,7 +94,7 @@ void initialize() {
     //         update_position_labels(chassis.getPose().x, chassis.getPose().y, chassis.getPose().theta); 
     //         lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
     //         pros::delay(50);         
-    //     }
+    //     }s
     // });
 
     pros::lcd::initialize();

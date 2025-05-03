@@ -11,7 +11,7 @@ namespace localization {
         static constexpr bool usingVectorizedMotion = true;
 
         static constexpr bool logging = true;
-        static constexpr bool particle_logging = true;
+        static constexpr bool particle_logging = false;
 
         // threshold for sum of weights before normalization which determines if the iteration is lost
         // this should be tuned so iterations which are clearly lost can be determined and counted so the algorithm can recover

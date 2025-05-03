@@ -69,11 +69,11 @@ pros::Rotation horizontalEnc(-4);
 pros::Rotation verticalEnc(-3);
 
 // current offsets -2.625, 0.1675 
-lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -1.5); // figure the offsets
-lemlib::TrackingWheel vertical(&verticalEnc, 1.995, -0.1);
+lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -2.25); // figure the offsets
+lemlib::TrackingWheel vertical(&verticalEnc, 1.995, -0.25);
 
 RobotSubsystems subsystem;
-AutonRoutes active_route = BLUE_RING;
+AutonRoutes active_route = TEST;
 
 bool playingRedSide = false;
 bool useColorSort = false;  
@@ -224,7 +224,7 @@ localization::MotionModel motion_model(
         &verticalEnc, // vertical drift
         &horizontalEnc); // horizontal drift
 
-localization::ParticleFilter<2048> particle_filter(&motion_model, 
+localization::ParticleFilter<1000> particle_filter(&motion_model, 
     [](){
         // const Angle angle = -imu.get_heading() * deg;
         const Angle angle = from_cDeg(inertial_sensor.get_heading());
