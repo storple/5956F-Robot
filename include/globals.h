@@ -2,12 +2,18 @@
 
 #include "api.h"
 #include "lemlib/api.hpp"
+#include "pros/rotation.hpp"
 #include "robot/auton.h"
 #include "robot/arm.h"
 #include "robot/drivetrain.h"
 #include "robot/intake.h"
 #include "robot/pneumatics.h"
 #include "robot/screen.h"
+
+#include "localization/pose.h"
+#include "localization/motion_model.h"
+#include "localization/distance_model.h"
+#include "localization/particle_filter.h"
 
 namespace Robot {
 namespace Globals {
@@ -22,6 +28,9 @@ extern pros::Motor RightBack;
 extern pros::Motor IntakeMotor;
 extern pros::Motor ArmMotor;
 extern pros::Motor ArmMotor2;
+
+extern pros::Rotation horizontalEnc;
+extern pros::Rotation verticalEnc;
 
 extern pros::MotorGroup punchers;
 extern pros::MotorGroup left_motors;
@@ -43,9 +52,11 @@ extern pros::Rotation arm_sensor;
 extern pros::Imu inertial_sensor;
 extern pros::Optical color_sensor;
 extern pros::Distance distance_sensor;
-extern pros::Distance wall_sensor;
-extern pros::Distance wall_sensor_back;
-extern pros::Distance wall_sensor_side;
+
+extern pros::Distance front_distance;
+extern pros::Distance back_distance;
+extern pros::Distance left_distance;
+extern pros::Distance right_distance;
 
 /**
  * @brief Structure that holds instances of all robot subsystems.
@@ -87,7 +98,14 @@ extern lemlib::Chassis chassis;
 extern lemlib::ExpoDriveCurve throttle_curve;
 extern lemlib::ExpoDriveCurve steer_curve;
 
+extern localization::DistanceSensorModel front_distance_model;
+extern localization::DistanceSensorModel left_distance_model;
+extern localization::DistanceSensorModel back_distance_model;
+extern localization::DistanceSensorModel right_distance_model;
 
+extern localization::MotionModel motion_model;
+
+extern localization::ParticleFilter<1024> particle_filter;
 
 }  // namespace Globals
 }  // namespace Robot

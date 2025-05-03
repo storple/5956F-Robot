@@ -12,10 +12,12 @@ BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 
-MAKEFLAGS=-j8
 WARNFLAGS+=
 EXTRA_CFLAGS=
 EXTRA_CXXFLAGS=
+
+# makes compilation faster by allowing use of multiple cores
+MAKEFLAGS=-j6
 
 # Set to 1 to enable hot/cold linking
 USE_PACKAGE:=1

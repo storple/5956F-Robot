@@ -21,7 +21,7 @@ void Autonomous::WallSensorPID(float target_distance, int timeout, bool back) {
 
     while (true) {
 
-        long double error = target_distance - (wall_sensor.get());
+        long double error = target_distance - (front_distance.get());
 
         double output = wall_sensor_pid.update((double) error);
 
@@ -44,7 +44,7 @@ void Autonomous::WallSensorPID(float target_distance, int timeout, bool back) {
 
     while (true) {
 
-        long double error = target_distance - (wall_sensor_back.get());
+        long double error = target_distance - (back_distance.get());
 
         double output = wall_sensor_pid.update((double) error);
 
@@ -119,8 +119,8 @@ std::pair<float, float> distanceReset() {
     constexpr float SENSOR_OFFSET_FRONT = 6.125; // front sensor offset from robot center (inches)
     constexpr float SENSOR_OFFSET_LEFT  = 5; // left sensor offset from robot center (inches)
 
-    float d_front = wall_sensor_back.get() / 25.4;  
-    float d_left  = wall_sensor.get()  / 25.4;
+    float d_front = back_distance.get() / 25.4;  
+    float d_left  = front_distance.get()  / 25.4;
 
     float theta = chassis.getPose().theta * (M_PI / 180.0);
 
@@ -136,7 +136,7 @@ std::pair<float, float> distanceReset() {
 float Autonomous::distanceResetX() {
 	constexpr float SENSOR_OFFSET_X = 6.125; // offset in inches
 
-    float measured_distance = wall_sensor_back.get() / 25.4; // convert from mm to inches
+    float measured_distance = back_distance.get() / 25.4; // convert from mm to inches
 	float adjusted_distance = 70.4 - ((measured_distance+SENSOR_OFFSET_X));
     // float theta = (90-chassis.getPose().theta) * (M_PI / 180.0);
 	// float adjusted_distance = 72 - ((measured_distance + SENSOR_OFFSET_X) * cos(theta));
@@ -147,7 +147,7 @@ float Autonomous::distanceResetX() {
 float Autonomous::distanceResetY() {
 	constexpr float SENSOR_OFFSET_Y = 4.90625; // offset in inches
 
-    float measured_distance = wall_sensor.get() / 25.4; // convert from mm to inches
+    float measured_distance = front_distance.get() / 25.4; // convert from mm to inches
     float adjusted_distance = -24 + (measured_distance + SENSOR_OFFSET_Y);
 
     return adjusted_distance;

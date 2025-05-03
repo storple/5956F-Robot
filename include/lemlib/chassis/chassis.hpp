@@ -176,6 +176,21 @@ enum class AngularDirection {
 };
 
 /**
+ * @brief Update information for Chassis::customMotion
+ *
+ * To return the various values required for customMotion to correctly update we use this struct.
+ */
+struct CustomMotionUpdate {
+        int left_motor_power;
+        int right_motor_power;
+        /** if motor powers are in voltage or velocity **/
+        bool velocity;
+        bool settling;
+        /** current progress on the motion. */
+        float distance;
+};
+
+/**
  * @brief Parameters for Chassis::turnToPoint
  *
  * We use a struct to simplify customization. Chassis::turnToPoint has many
@@ -347,6 +362,10 @@ class Chassis {
                 OdomSensors sensors, DriveCurve* throttleCurve = &defaultDriveCurve,
                 DriveCurve* steerCurve = &defaultDriveCurve);
         /**
+         * @brief calibrate the IMU
+         */
+        void calibrateIMU();
+        /**
          * @brief Calibrate the chassis sensors. THis should be called in the initialize function
          *
          * @param calibrateIMU whether the IMU should be calibrated. true by default
@@ -404,6 +423,42 @@ class Chassis {
          * @endcode
          */
         void setPose(Pose pose, bool radians = false);
+        /**
+         * @brief Update the pose of the chassis along with global and local speeds
+         *
+         * @param x new x value
+         * @param y new y value
+         * @param theta new theta value
+         * @param radians true if theta is in radians, false if not. False by default
+         *
+         * @b Example
+         * @code {.cpp}
+         * // set the pose of the chassis to x = 0, y = 0, theta = 0
+         * chassis.updatePose(0, 0, 0);
+         * // set the pose of the chassis to x = 5.3, y = 12.2, theta = 3.14
+         * // this time with theta in radians
+         * chassis.updatePose(5.3, 12.2, 3.14, true);
+         * @endcode
+         */
+        void updatePose(float x, float y, float theta, bool radians = false);
+        /**
+         * @brief Update the pose of the chassis along with global and local speeds
+         *
+         * @param pose the new pose
+         * @param radians whether pose theta is in radians (true) or not (false). false by default
+         *
+         * @b Example
+         * @code {.cpp}
+         * // set the pose of the chassis to x = 0, y = 0, theta = 0
+         * lemlib::Pose poseA(0, 0, 0);
+         * chassis.updatePose(poseA);
+         * // set the pose of the chassis to x = 5.3, y = 12.2, theta = 3.14
+         * // this time with theta in radians
+         * lemlib::Pose poseB(5.3, 12.2, 3.14);
+         * chassis.updatePose(poseB, true);
+         * @endcode
+         */
+        void updatePose(Pose pose, bool radians = false);
         /**
          * @brief Get the pose of the chassis
          *
@@ -680,6 +735,31 @@ class Chassis {
          * @endcode
          */
         void moveToPoint(float x, float y, int timeout, MoveToPointParams params = {}, bool async = true);
+
+        /**
+         * @brief Allows the definition of arbitrary motions
+         *
+         * @param update function which determines how to move the robot
+         * @param timeout the maximum time the robot can spend moving
+         * @param params struct to simulate named parameters
+         * @param async whether the function should be run asynchronously. true by default
+         *
+         * @b Example
+         * @code {.cpp}
+         * // basic function to move the Robot forwards
+         * lemlib::CustomMotionUpdate moveForward(lemlib::Pose,lemlib::CustomMotionParams){
+         *  return {127, 127, false, false, 0};
+         * }
+         *
+         * // autonomous function in your project. The function that runs during the autonomous period
+         * void autonomous() {
+         *     // moves the robot according to moveForwards until its settled or it hits the timeout
+         *     chassis.customMotion(moveForwards, 4000);
+         * }
+         * @endcode
+         */
+        void customMotion(std::function<CustomMotionUpdate(Pose)> update, int timeout, bool async = true);
+
         /**
          * @brief Move the chassis along a path
          *

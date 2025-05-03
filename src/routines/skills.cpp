@@ -126,7 +126,7 @@ void Autonomous::Skills()
 	chassis.turnToPoint(-46, 72, 750, {.maxSpeed=80});
 	chassis.moveToPoint(-46, 72, 1000, {.maxSpeed=80});
 	chassis.turnToHeading(-90, 400, {.maxSpeed=60}, false);
-	chassis.setPose((4.9+((wall_sensor.get())/25.4)) - 70.4, chassis.getPose().y, chassis.getPose().theta);
+	chassis.setPose((4.9+((front_distance.get())/25.4)) - 70.4, chassis.getPose().y, chassis.getPose().theta);
 	controller.print(0, 0, "%f, %f",chassis.getPose().x, chassis.getPose().y);
 	pros::delay(100);
 	chassis.turnToHeading(0, 750, {.maxSpeed=80});

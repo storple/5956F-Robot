@@ -3,6 +3,11 @@
 #include "pros/motors.hpp"
 #include "liblvgl/lvgl.h"
 
+#include "localization/pose.h"
+#include "localization/motion_model.h"
+#include "localization/distance_model.h"
+#include "localization/particle_filter.h"
+
 /*
  * Although the following constants belong in their own seperate
  * files(auton.cpp, drivetrain.cpp), they are put here in order to maintain a
@@ -54,9 +59,11 @@ pros::Rotation arm_sensor(20);
 pros::Imu inertial_sensor(15);
 pros::Optical color_sensor(20);
 pros::Distance distance_sensor(20);
-pros::Distance wall_sensor(20);
-pros::Distance wall_sensor_back(20);
-pros::Distance wall_sensor_side(20);
+
+pros::Distance front_distance(17);
+pros::Distance back_distance(19);
+pros::Distance left_distance(16);
+pros::Distance right_distance(18);
 
 pros::Rotation horizontalEnc(-4);
 pros::Rotation verticalEnc(-3);
@@ -195,6 +202,34 @@ lemlib::ExpoDriveCurve steer_curve(
 
 lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller,
                         sensors, &throttle_curve, &steer_curve);
+
+localization::DistanceSensorModel front_distance_model(
+    {1.4_in,4.1875_in}, // back offsets
+    &front_distance,"front");
+
+localization::DistanceSensorModel left_distance_model(
+    {-0.25_in, 5.125_in}, // left offsets
+    & left_distance,"left");
+
+localization::DistanceSensorModel back_distance_model(
+    {-4.75_in,-1.5_in}, // front offsets
+    & back_distance,"back");
+
+localization::DistanceSensorModel right_distance_model(
+    {-4_in,-2.625_in}, // right offsets
+    &right_distance,"right");
+
+localization::MotionModel motion_model(
+        &drivetrain,
+        &verticalEnc, // vertical drift
+        &horizontalEnc); // horizontal drift
+
+localization::ParticleFilter<1024> particle_filter(&motion_model, 
+    [](){
+        // const Angle angle = -imu.get_heading() * deg;
+        const Angle angle = from_cDeg(inertial_sensor.get_heading());
+        return isfinite(angle.internal()) ? units::constrainAngle360_2(angle) : from_stDeg(infinity());
+    });
 
 }  // namespace Globals
 

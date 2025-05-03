@@ -1,5 +1,6 @@
 #include "main.h"
 #include "pros/apix.h"
+#include "localization_utils.h"
 
 using namespace Robot;
 using namespace Robot::Globals;
@@ -9,12 +10,76 @@ using namespace Robot::Globals;
  * Runs initialization code. This occurs as soon as the program is started.
  */
 
-void initialize() {
+Length getRotationDistance(const pros::Rotation * rotation) {
+    const Length odom_circumference = 1.99_in * 2 * M_PI;
+    float rotations = from_stDeg(static_cast<float>(rotation->get_position()) / 100.0) / rot;
+    Length totalPosition = rotations * odom_circumference; 
+    return totalPosition;
+}
 
-    chassis.calibrate();
+void calibrate_odometry_distance(){
+    pros::Task screen_task([&]() {
+        while (true) {
+            // print robot location to the brain screen
+        if(Robot::Globals::horizontalEnc.is_installed()){
+            pros::lcd::print(0, "hor: %f", getRotationDistance(&Robot::Globals::horizontalEnc).convert(in)); 
+        }
+        if(Robot::Globals::verticalEnc.is_installed()){
+            pros::lcd::print(0, "ver: %f", getRotationDistance(&Robot::Globals::verticalEnc).convert(in));
+        }
+        pros::delay(50);
+        }
+    });
+}
+
+
+void particle_filter_init(){
+    
+    if(inertial_sensor.is_installed()){
+        // imu is present, try to calibrate
+        chassis.calibrateIMU();
+    }else{
+        // imu is not connected, should warn the user that this is the case
+        printf("IMU IS NOT CONNECTED!!!!");
+    }
+
+
+    particle_filter.addSensor(&front_distance_model);
+    particle_filter.addSensor(&left_distance_model);
+    particle_filter.addSensor(&right_distance_model);
+    particle_filter.addSensor(&back_distance_model);
+
+    particle_filter.initUniform(-70_in, -70_in, 70_in, 70_in);
+    inertial_sensor.set_heading(90);
+
+    pros::Task localization_task = pros::Task([&] {
+      uint32_t start_time = 0;
+      while (true) {
+        start_time = pros::millis();
+
+        particle_filter.update();
+        const localization::Pose prediction = particle_filter.getPrediction();
+        chassis.setPose(
+            to_in(prediction.x),
+            to_in(prediction.y),
+            inertial_sensor.get_heading()
+        );
+
+        pros::c::task_delay_until(&start_time, 10);
+      }
+    });
+
+    pros::c::controller_rumble(pros::E_CONTROLLER_MASTER, ".");
+}
+
+
+void initialize() {
+    // chassis.calibrate();
     ArmMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     ArmMotor2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     ArmMotor.tare_position();
+
+    particle_filter_init();
 
     // runScreen();
 
@@ -75,6 +140,9 @@ void autonomous() {
  * Runs the operator control code. 
  */
 void opcontrol() {
+
+    localization::setPose(-60_in, 0_in, 90, 3_in);
+
    
    // autonomous();
 
@@ -89,7 +157,7 @@ void opcontrol() {
     pros::Task armTask([] { while (true) { subsystem.arm.run(); subsystem.arm.update(); } });
 
     while (true) {
-        pros::lcd::print(5, "distance: %d", wall_sensor.get()); // x
+        pros::lcd::print(5, "distance: %d", front_distance.get()); // x
         pros::delay(50);
     }
 

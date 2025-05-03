@@ -26,6 +26,13 @@ Pose getPose(bool radians = false);
  */
 void setPose(Pose pose, bool radians = false);
 /**
+ * @brief Update the Pose of the robot along with global and local speeds 
+ *
+ * @param pose the new pose
+ * @param radians true if theta is in radians, false if in degrees. False by default
+ */
+void updatePose(Pose pose, bool radians = false);
+/**
  * @brief Get the speed of the robot
  *
  * @param radians true for theta in radians, false for degrees. False by default

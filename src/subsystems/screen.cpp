@@ -1,4 +1,5 @@
 #include "robot/screen.h"
+#include "liblvgl/display/lv_display.h"
 #include "pros/apix.h"
 #include "liblvgl/lvgl.h"
 #include "globals.h"
@@ -56,7 +57,7 @@ void none_cb(lv_event_t *e) { set_info_label("none"); active_route = NONE; updat
 
 // helper function to create buttons
 lv_obj_t* make_button(lv_obj_t* holder, int posX, int posY, int width, int height, const char* s, std::string color, void (*callback)(lv_event_t*)) {
-    lv_obj_t* btn = lv_btn_create(holder);
+    lv_obj_t* btn = lv_button_create(holder);
     lv_obj_set_pos(btn, posX, posY);
     lv_obj_set_size(btn, width, height);
     lv_obj_add_event_cb(btn, callback, LV_EVENT_CLICKED, NULL);
@@ -91,9 +92,10 @@ void runScreen() {
     lv_init();
 
     // Create the autonomous selection screen
-    auton_select_screen = lv_obj_create(lv_scr_act());
+    auton_select_screen = lv_obj_create(lv_screen_active());
     lv_obj_remove_style_all(auton_select_screen);
-    lv_obj_set_size(auton_select_screen, lv_disp_get_hor_res(NULL), lv_disp_get_ver_res(NULL));
+    
+    lv_obj_set_size(auton_select_screen, lv_display_get_horizontal_resolution(NULL), lv_display_get_vertical_resolution(NULL));
     lv_obj_center(auton_select_screen);
 
     // Info label 
