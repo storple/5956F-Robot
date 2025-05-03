@@ -12,8 +12,8 @@ class Pneumatics {
 
   bool detectMogo();
   void toggleLatch();
-  void toggleDoinker();
-  void toggleDoinker2();
+  void toggleLeftDoinker();
+  void toggleRightDoinker();
   void toggleIntakeLift();
 
  private:

@@ -15,19 +15,20 @@ void Pneumatics::run() {
 
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) { mogoGoalState = !mogoGoalState; }
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) { Pneumatics::toggleLatch(); mogoGoalState = !mogoGoalState; pros::delay(500); }
-  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) { Pneumatics::toggleDoinker2(); }
-  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) { Pneumatics::toggleDoinker(); }
+  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) { Pneumatics::toggleRightDoinker(); }
+  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) { Pneumatics::toggleLeftDoinker(); }
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) { Pneumatics::toggleIntakeLift(); }
 
   pros::delay(20);
 }
 
 bool Pneumatics::detectMogo() {
-  return (distance_sensor.get() < 20);
+  return false;
+  // return (distance_sensor.get() < 20);
 }
 
 void Pneumatics::toggleLatch() { LatchControl.toggle(); }
-void Pneumatics::toggleDoinker() { Doinker.toggle(); }
-void Pneumatics::toggleDoinker2() { Doinker2.toggle(); }
+void Pneumatics::toggleLeftDoinker() { LeftDoinker.toggle(); }
+void Pneumatics::toggleRightDoinker() { RightDoinker.toggle(); }
 void Pneumatics::toggleIntakeLift() { IntakeLift.toggle(); }
 

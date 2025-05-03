@@ -8,24 +8,23 @@ void Autonomous::RedGoalRush() {
 
     chassis.setPose(36, -1.5, 16);
 
-    ArmMotor1.move(-20);
-    ArmMotor2.move(-20);
+    ArmMotor.move(-20);
 
     subsystem.intake.toggle();
-    subsystem.pneumatics.toggleDoinker();
+    subsystem.pneumatics.toggleLeftDoinker();
     chassis.moveToPoint(47, 30, 950, {.minSpeed=80});
     pros::delay(750);
-    subsystem.pneumatics.toggleDoinker();
+    subsystem.pneumatics.toggleLeftDoinker();
     pros::delay(100);
     subsystem.intake.toggle();
     chassis.moveToPoint(52, 18, 1250, {.forwards=false, .minSpeed=60}, true);
     chassis.waitUntil(14);
-    subsystem.pneumatics.toggleDoinker();
+    subsystem.pneumatics.toggleLeftDoinker();
     chassis.cancelAllMotions();
     pros::delay(750);
     chassis.turnToPoint(24, 22, 1000, {.forwards=false, .maxSpeed=90}, false);
     ClampPID(10, 1750, false);
-    subsystem.pneumatics.toggleDoinker();
+    subsystem.pneumatics.toggleLeftDoinker();
     pros::delay(250);
     subsystem.intake.toggle();
     chassis.turnToPoint(24, -4, 500);

@@ -20,7 +20,7 @@ extern pros::Motor RightFront;
 extern pros::Motor RightMid;
 extern pros::Motor RightBack;
 extern pros::Motor IntakeMotor;
-extern pros::Motor ArmMotor1;
+extern pros::Motor ArmMotor;
 extern pros::Motor ArmMotor2;
 
 extern pros::MotorGroup punchers;
@@ -30,8 +30,8 @@ extern pros::MotorGroup drive_;
 
 extern pros::adi::Pneumatics LatchControl;
 extern pros::adi::Pneumatics IntakeLift;
-extern pros::adi::Pneumatics Doinker;
-extern pros::adi::Pneumatics Doinker2;
+extern pros::adi::Pneumatics LeftDoinker;
+extern pros::adi::Pneumatics RightDoinker;
 
 extern pros::adi::DigitalIn LimitSwitch;
 
@@ -74,7 +74,7 @@ extern lemlib::ControllerSettings lateral_controller;
 // turning PID
 extern lemlib::ControllerSettings angular_controller;
 
-extern lemlib::PID arm_pid;
+extern lemlib::PID current_arm_pid;
 extern lemlib::PID wall_sensor_pid;
 extern lemlib::PID distance_sensor_pid;
 

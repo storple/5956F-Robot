@@ -12,12 +12,11 @@ using namespace Robot::Globals;
 void initialize() {
 
     chassis.calibrate();
-    color_sensor.set_led_pwm(50);
-    ArmMotor1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    ArmMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     ArmMotor2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    
+    ArmMotor.tare_position();
 
-    runScreen();
+    // runScreen();
 
     // pros::Task screenTask([&] {
     //     while (true) {
@@ -27,26 +26,28 @@ void initialize() {
     //     }
     // });
 
-    // pros::lcd::initialize();
-    // pros::lcd::set_text(1, "Hello PROS User!");
-    //     // thread to for brain screen and position logging
-    // pros::Task screenTask([&]() {
-    //     while (true) {
-    //         // print robot location to the brain screen
-    //         pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
-    //         pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
-    //         pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-    //         pros::lcd::print(4, "autoClamp: %d", useAutoClamp);
-    //         pros::lcd::print(5, "distance: %d", wall_sensor_back.get()); // x
-    //         pros::lcd::print(6, "useColorSort: %d", useColorSort);
-    //         pros::lcd::print(7, "ring distance: %d", color_sensor.get_proximity());
+    pros::lcd::initialize();
+    pros::lcd::set_text(1, "Hello PROS User!");
+        // thread to for brain screen and position logging
+    pros::Task screenTask([&]() {
+        while (true) {
+            // print robot location to the brain screen
+            pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
+            pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
+            pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+            pros::lcd::print(4, "armAngle: %f", ArmMotor.get_position());
+            pros::lcd::print(5, "armVoltage: %d", ArmMotor.get_voltage());
+            // pros::lcd::print(4, "autoClamp: %d", useAutoClamp);
+            // // pros::lcd::print(5, "distance: %d", wall_sensor_back.get()); // x
+            // // pros::lcd::print(6, "useColorSort: %d", useColorSort);
+            // // pros::lcd::print(7, "ring distance: %d", color_sensor.get_proximity());
 
-    //         // log position telemetry
-    //         lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
-    //         // delay to save resources
-    //         pros::delay(50);
-    //     }
-    // });
+            // log position telemetry
+            lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
+            // delay to save resources
+            pros::delay(50);
+        }
+    });
 
 
 }
@@ -77,10 +78,10 @@ void opcontrol() {
    
    // autonomous();
 
-    if (subsystem.pneumatics.detectMogo()) 
-        mogoGoalState = true;
-    else
-        mogoGoalState = false;
+    // if (subsystem.pneumatics.detectMogo()) 
+    //     mogoGoalState = true;
+    // else
+    //     mogoGoalState = false;
 
     pros::Task drivetrainTask([] { while (true) { subsystem.drivetrain.run(); } });
     pros::Task pneumaticsTask([] { while (true) { subsystem.pneumatics.run(); } });

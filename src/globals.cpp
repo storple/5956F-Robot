@@ -19,55 +19,54 @@ namespace Globals {
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-pros::Motor LeftFront(-20, pros::v5::MotorGears::blue,
+pros::Motor LeftFront(-10, pros::v5::MotorGears::blue,
                       pros::v5::MotorUnits::degrees);
-pros::Motor LeftMid(-17, pros::v5::MotorGears::blue,
+pros::Motor LeftMid(-8, pros::v5::MotorGears::blue,
                     pros::v5::MotorUnits::degrees);
-pros::Motor LeftBack(-18, pros::v5::MotorGears::blue,
+pros::Motor LeftBack(9, pros::v5::MotorGears::blue,
                      pros::v5::MotorUnits::degrees);
-pros::Motor RightFront(16, pros::v5::MotorGears::blue,
+pros::Motor RightFront(7, pros::v5::MotorGears::blue,
                        pros::v5::MotorUnits::degrees);
-pros::Motor RightMid(19, pros::v5::MotorGears::blue,
+pros::Motor RightMid(6, pros::v5::MotorGears::blue,
                      pros::v5::MotorUnits::degrees);
-pros::Motor RightBack(12, pros::v5::MotorGears::blue,
+pros::Motor RightBack(-5, pros::v5::MotorGears::blue,
                       pros::v5::MotorUnits::degrees);
-pros::Motor IntakeMotor(-11, pros::v5::MotorGears::blue,
+pros::Motor IntakeMotor(14, pros::v5::MotorGears::blue,
                         pros::v5::MotorUnits::degrees);
-pros::Motor ArmMotor1(-9, pros::v5::MotorGears::blue,
+pros::Motor ArmMotor(11, pros::v5::MotorGears::blue,
                         pros::v5::MotorUnits::degrees);
-pros::Motor ArmMotor2(10, pros::v5::MotorGears::blue,
+pros::Motor ArmMotor2(-13, pros::v5::MotorGears::blue,
                         pros::v5::MotorUnits::degrees);
-
 
 pros::MotorGroup left_motors({LeftFront.get_port(), LeftMid.get_port(),
                              LeftBack.get_port()}, pros::MotorGearset::blue);
 pros::MotorGroup right_motors({RightFront.get_port(), RightMid.get_port(),
                               RightBack.get_port()}, pros::MotorGearset::blue);
 
-pros::adi::Pneumatics Doinker('A', false);
-pros::adi::Pneumatics Doinker2('C', false);
-pros::adi::Pneumatics LatchControl('B', false);
-pros::adi::Pneumatics IntakeLift('F', false); 
+pros::adi::Pneumatics LeftDoinker('D', false);
+pros::adi::Pneumatics RightDoinker('C', false);
+pros::adi::Pneumatics LatchControl('A', false);
+pros::adi::Pneumatics IntakeLift('B', false); 
 
-pros::adi::DigitalIn LimitSwitch('D');
+pros::adi::DigitalIn LimitSwitch('F');
 
-pros::Rotation arm_sensor(7);
-pros::Imu inertial_sensor(4);
-pros::Optical color_sensor(15);
-pros::Distance distance_sensor(13);
-pros::Distance wall_sensor(14);
-pros::Distance wall_sensor_back(8);
-pros::Distance wall_sensor_side(6);
+pros::Rotation arm_sensor(20); 
+pros::Imu inertial_sensor(15);
+pros::Optical color_sensor(20);
+pros::Distance distance_sensor(20);
+pros::Distance wall_sensor(20);
+pros::Distance wall_sensor_back(20);
+pros::Distance wall_sensor_side(20);
 
-pros::Rotation horizontalEnc(-1);
-pros::Rotation verticalEnc(-2);
+pros::Rotation horizontalEnc(-4);
+pros::Rotation verticalEnc(-3);
 
 // current offsets -2.625, 0.1675 
-lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -2.9375); // figure the offsets
-lemlib::TrackingWheel vertical(&verticalEnc, 1.995, 0.03125);
+lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -1.5); // figure the offsets
+lemlib::TrackingWheel vertical(&verticalEnc, 1.995, -0.1);
 
 RobotSubsystems subsystem;
-AutonRoutes active_route = SKILLS;
+AutonRoutes active_route = BLUE_RING;
 
 bool playingRedSide = false;
 bool useColorSort = false;  
@@ -77,7 +76,7 @@ bool mogoGoalState = false;
 lemlib::Drivetrain drivetrain(
     &left_motors, // left motor group
     &right_motors, // right motor group
-    11.3125, // track width (inches)
+    10.4375, // track width (inches)
     lemlib::Omniwheel::NEW_325,
     450, // drivetrain rpm   
     2 // horizontal drift is 2 (for now)
@@ -93,9 +92,9 @@ lemlib::OdomSensors sensors(
 
 // forward/backward PID
 lemlib::ControllerSettings lateral_controller{
-    4.5,    // kP
+    4,    // kP
     0,    // KI 
-    4,    // kD
+    3,    // kD
     0,    // Anti Windup
     0,    // smallErrorRange
     0,  // smallErrorTimeout
@@ -106,9 +105,9 @@ lemlib::ControllerSettings lateral_controller{
 
 // turning PID
 lemlib::ControllerSettings angular_controller{
-    3,  // kP
+    2.7,  // kP
     0,     // kI
-    18, // kD
+    20, // kD
     0,     // Anti Windup
     0,     // smallErrorRange
     0,   // smallErrorTimeout
@@ -145,14 +144,24 @@ lemlib::ControllerSettings angular_controller{
 };
 */
 
+// lemlib::PID* current_arm_pid;
 
-lemlib::PID arm_pid(
-    0.01, // kP
+lemlib::PID current_arm_pid(
+    0.8, // kP
     0, // kI
     0   , // kD
     5, // integral anti windup range
     false // don't reset integral when sign of error flips
 );
+
+// lemlib::PID arm_pid_score(
+//     0.1, // kP
+//     0, // kI
+//     0   , // kD
+//     5, // integral anti windup range
+//     false // don't reset integral when sign of error flips
+// );
+
 
 lemlib::PID wall_sensor_pid(
     0.2, // kP
