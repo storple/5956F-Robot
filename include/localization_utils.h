@@ -1,9 +1,9 @@
 #pragma once
 
-#include "pros/apix.h"
 #include "units/units.hpp"
 #include "units/Angle.hpp"
-#include "globals.h"
+#include "localization/pose.h"
+#include "localization/utils.h"
 
 #include <map>
 

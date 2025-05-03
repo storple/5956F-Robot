@@ -10,10 +10,10 @@
 #include "robot/pneumatics.h"
 #include "robot/screen.h"
 
-#include "localization/pose.h"
-#include "localization/motion_model.h"
-#include "localization/distance_model.h"
-#include "localization/particle_filter.h"
+// #include "localization/pose.h"
+// #include "localization/motion_model.h"
+// #include "localization/distance_model.h"
+// #include "localization/particle_filter.h"
 
 namespace Robot {
 namespace Globals {
@@ -105,7 +105,7 @@ extern localization::DistanceSensorModel right_distance_model;
 
 extern localization::MotionModel motion_model;
 
-extern localization::ParticleFilter<1024> particle_filter;
+extern localization::ParticleFilter<2048> particle_filter;
 
 }  // namespace Globals
 }  // namespace Robot

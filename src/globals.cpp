@@ -224,7 +224,7 @@ localization::MotionModel motion_model(
         &verticalEnc, // vertical drift
         &horizontalEnc); // horizontal drift
 
-localization::ParticleFilter<1024> particle_filter(&motion_model, 
+localization::ParticleFilter<2048> particle_filter(&motion_model, 
     [](){
         // const Angle angle = -imu.get_heading() * deg;
         const Angle angle = from_cDeg(inertial_sensor.get_heading());

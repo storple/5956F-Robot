@@ -1,12 +1,12 @@
-CompileFlags:
-  Add: [
-    -std=c++23,
-    -isystem/usr/lib/clang/19/include,
-    -isystem/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/include/c++/14.2.0,
-    -isystem/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/include/c++/14.2.0/arm-none-eabi/thumb/v7+fp/softfp,
-    -isystem/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/include/c++/14.2.0/backward,
-    -isystem/usr/lib/gcc/arm-none-eabi/14.2.0/include,
-    -isystem/usr/lib/gcc/arm-none-eabi/14.2.0/include-fixed,
-    -isystem/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/include
-    ]
-  Remove: [ -isystem*, --std=gnu++23 ]
+# CompileFlags:
+#   Add: [
+#     -std=c++23,
+#     -isystemC:/Users/mnguy/AppData/Roaming/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/19.1.2/clangd_19.1.2/lib/clang/19.1.2/include,
+#     -isystemC:/Users/mnguy/AppData/Roaming/Code/User/globalStorage/sigbots.pros/install/pros-toolchain-windows/usr/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include/c++/13.3.1,
+#     -isystemC:/Users/mnguy/AppData/Roaming/Code/User/globalStorage/sigbots.pros/install/pros-toolchain-windows/usr/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include/c++/13.3.1/arm-none-eabi/thumb/v7-a+simd/hard,
+#     -isystemC:/Users/mnguy/AppData/Roaming/Code/User/globalStorage/sigbots.pros/install/pros-toolchain-windows/usr/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include/c++/13.3.1/backward,
+#     -isystemC:/Users/mnguy/AppData/Roaming/Code/User/globalStorage/sigbots.pros/install/pros-toolchain-windows/usr/bin/../lib/gcc/arm-none-eabi/13.3.1/include,
+#     -isystemC:/Users/mnguy/AppData/Roaming/Code/User/globalStorage/sigbots.pros/install/pros-toolchain-windows/usr/bin/../lib/gcc/arm-none-eabi/13.3.1/include-fixed,
+#     -isystemC:/Users/mnguy/AppData/Roaming/Code/User/globalStorage/sigbots.pros/install/pros-toolchain-windows/usr/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include
+#     ]
+#   Remove: [ -isystem*, --std=gnu++23 ]

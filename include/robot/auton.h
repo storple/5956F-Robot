@@ -3,11 +3,12 @@
 
 #include "robot/intake.h"
 #include "robot/pneumatics.h"
+#include "localization_utils.h"
 
 namespace Robot
 {
-/**
- * @details We use Lemlib extensively for our documentation. You can find the documentation for Lemlib at
+	/** 
+	* @details We use Lemlib extensively for our documentation. You can find the documentation for Lemlib at
  * <A HREF="https://lemlib.github.io/lemlib/">Lemlib documentation</A>.
  * @brief The \ref Autonomous class contains classes and functions related to the robot's autonomous behavior.
  */

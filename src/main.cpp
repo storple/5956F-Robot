@@ -1,6 +1,6 @@
 #include "main.h"
 #include "pros/apix.h"
-#include "localization_utils.h"
+// #include "localization_utils.h"
 
 using namespace Robot;
 using namespace Robot::Globals;
@@ -11,7 +11,7 @@ using namespace Robot::Globals;
  */
 
 Length getRotationDistance(const pros::Rotation * rotation) {
-    const Length odom_circumference = 1.99_in * 2 * M_PI;
+    const Length odom_circumference = 1.995_in * 2 * M_PI;
     float rotations = from_stDeg(static_cast<float>(rotation->get_position()) / 100.0) / rot;
     Length totalPosition = rotations * odom_circumference; 
     return totalPosition;
@@ -74,12 +74,12 @@ void particle_filter_init(){
 
 
 void initialize() {
-    // chassis.calibrate();
+    chassis.calibrate();
     ArmMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     ArmMotor2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     ArmMotor.tare_position();
 
-    particle_filter_init();
+    // particle_filter_init();
 
     // runScreen();
 
@@ -140,9 +140,6 @@ void autonomous() {
  * Runs the operator control code. 
  */
 void opcontrol() {
-
-    localization::setPose(-60_in, 0_in, 90, 3_in);
-
    
    // autonomous();
 

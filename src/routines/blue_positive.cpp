@@ -1,3 +1,4 @@
+#include "lemlib/chassis/chassis.hpp"
 #include "robot/auton.h"
 #include "main.h"
 
@@ -6,7 +7,6 @@ using namespace Robot::Globals;
 
 void Autonomous::BluePositive() {
 	chassis.setPose(61.2, -13, 45);   //61.2, -13,
-
 
 	ArmMotor.move(127);
 	ArmMotor2.move(127);

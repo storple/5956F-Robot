@@ -17,7 +17,7 @@ EXTRA_CFLAGS=
 EXTRA_CXXFLAGS=
 
 # makes compilation faster by allowing use of multiple cores
-MAKEFLAGS=-j6
+MAKEFLAGS=-j7
 
 # Set to 1 to enable hot/cold linking
 USE_PACKAGE:=1
