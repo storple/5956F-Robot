@@ -32,7 +32,7 @@ namespace localization {
 
         // different method of introducing noise to the odometry model
         // this constant is suppposed to introduce constant noise, not dependent on how much the robot actually moves
-        static constexpr Length DRIVE_NOISE2 = 0.08_in;
+        static constexpr Length DRIVE_NOISE2 = 0.02_in;
 
         // relates slip to change in distance
         // higher distance travel usually results in wheel slipage, therefore we use a ratio to add noise based on change in distance
@@ -55,18 +55,18 @@ namespace localization {
         // setting to 1.0 means some particles would move in the direction of the last angle
         // while some would move only in the direction of the new angle
         // static constexpr float ANGLE_NOISE = 0.75;
-        static constexpr float ANGLE_NOISE = 0.25;
+        static constexpr float ANGLE_NOISE = 0.15;
 
         // drift noise
         // applies drift to particles 
         // +/- drift applied to particles
-        static constexpr Length DRIFT_NOISE = 0.25_in;
+        static constexpr Length DRIFT_NOISE = 0.1_in;
 
         // relation factor between the change in angle and drift
         // big changes in angle plus movement is usually what results in drift
         // therefore we can increase drift when we have big angles changes to better model the robot
         // this factor is multiplied by the angle change, then this gets added to the drift noise
-        static constexpr auto angle_drift_relation_factor = 0.5_in / 30_stDeg;
+        static constexpr auto angle_drift_relation_factor = 0.1_in / 30_stDeg;
 
         // same as angle drift relation factor
         // instead this one relates the angle change in movement vertically

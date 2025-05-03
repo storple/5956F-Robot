@@ -44,7 +44,7 @@ namespace localization {
             }
 
             const Length odom_wheel_diameter = 2_in; 
-            const float odom_gear_ratio = 1; // ???
+            const float odom_gear_ratio = 1; 
             const Length odom_circumference = M_PI * odom_wheel_diameter;
 
             Length getRotationDistance(const pros::Rotation * rotation) {
@@ -391,8 +391,8 @@ namespace localization {
                             (distanceDelta.x + angle_drift_noise).internal(),
                             robot_rng());
 
-                    Vavg_sina = vld1q_dup_f32(&sina);
-                    Vavg_cosa = vld1q_dup_f32(&cosa);
+                    Vavg_sina = vld1q_dup_f32(&avg_sina);
+                    Vavg_cosa = vld1q_dup_f32(&avg_cosa);
                 }
                
                // update "actual" odometry information
