@@ -88,11 +88,6 @@ void opcontrol() {
     pros::Task intakeTask([] { while (true) { subsystem.intake.run(); } });
     pros::Task armTask([] { while (true) { subsystem.arm.run(); subsystem.arm.update(); } });
 
-    while (true) {
-        pros::lcd::print(5, "distance: %d", wall_sensor.get()); // x
-        pros::delay(50);
-    }
-
     // controller.print(0, 0, ("colorsort: " + std::to_string(useColorSort)).c_str());
 
     // while (true) {

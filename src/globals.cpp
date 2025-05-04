@@ -1,5 +1,6 @@
 #include "globals.h"
 #include "pros/abstract_motor.hpp"
+#include "pros/distance.hpp"
 #include "pros/motors.hpp"
 #include "liblvgl/lvgl.h"
 
@@ -54,19 +55,20 @@ pros::Rotation arm_sensor(20);
 pros::Imu inertial_sensor(15);
 pros::Optical color_sensor(20);
 pros::Distance distance_sensor(20);
-pros::Distance wall_sensor(20);
-pros::Distance wall_sensor_back(20);
-pros::Distance wall_sensor_side(20);
+pros::Distance wall_sensor_front(17);
+pros::Distance wall_sensor_back(19);
+pros::Distance wall_sensor_left(16);
+pros::Distance wall_sensor_right(18);
 
 pros::Rotation horizontalEnc(-4);
 pros::Rotation verticalEnc(-3);
 
 // current offsets -2.625, 0.1675 
-lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -1.5); // figure the offsets
-lemlib::TrackingWheel vertical(&verticalEnc, 1.995, -0.1);
+lemlib::TrackingWheel horizontal(&horizontalEnc, 1.995, -2.15); // figure the offsets
+lemlib::TrackingWheel vertical(&verticalEnc, 1.995, 0.1);
 
 RobotSubsystems subsystem;
-AutonRoutes active_route = BLUE_RING;
+AutonRoutes active_route = RED_POS;
 
 bool playingRedSide = false;
 bool useColorSort = false;  

@@ -25,9 +25,9 @@ public:
 	void WallSensorPID(float target_distance, int timeout, bool back);
 	void ClampPID(float target_distance, int timeout, bool followthrough);
 	void LimitSwitchIntake(int timeout);
-	std::pair<float, float> distanceReset();
-	float distanceResetX();
-	float distanceResetY();
+	float distanceResetRightSensor();
+	float distanceResetLeftSensor();
+	float distanceResetFrontSensor();
 
 private:
 	void RedNegative();

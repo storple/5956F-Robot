@@ -23,6 +23,9 @@ extern pros::Motor IntakeMotor;
 extern pros::Motor ArmMotor;
 extern pros::Motor ArmMotor2;
 
+extern pros::Rotation verticalEnc;
+extern pros::Rotation horizontalEnc;
+
 extern pros::MotorGroup punchers;
 extern pros::MotorGroup left_motors;
 extern pros::MotorGroup right_motors;
@@ -43,9 +46,12 @@ extern pros::Rotation arm_sensor;
 extern pros::Imu inertial_sensor;
 extern pros::Optical color_sensor;
 extern pros::Distance distance_sensor;
-extern pros::Distance wall_sensor;
+
+extern pros::Distance wall_sensor_front;
 extern pros::Distance wall_sensor_back;
-extern pros::Distance wall_sensor_side;
+extern pros::Distance wall_sensor_left;
+extern pros::Distance wall_sensor_right;
+
 
 /**
  * @brief Structure that holds instances of all robot subsystems.

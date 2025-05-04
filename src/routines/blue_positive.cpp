@@ -7,7 +7,6 @@ using namespace Robot::Globals;
 void Autonomous::BluePositive() {
 	chassis.setPose(61.2, -13, 45);   //61.2, -13,
 
-
 	ArmMotor.move(127);
 	ArmMotor2.move(127);
 	pros::delay(500);
@@ -21,33 +20,39 @@ void Autonomous::BluePositive() {
 	subsystem.pneumatics.toggleLatch();
 	pros::delay(200);
 	subsystem.intake.toggle();
-	chassis.turnToPoint(24, -46, 1000, {.maxSpeed=90});
-
-	chassis.moveToPoint(24, -46, 950, {.maxSpeed=70}, false);
+	chassis.turnToHeading(180, 800, {.maxSpeed=100}, false);
+	pros::delay(500);
+	float leftDistance = distanceResetLeftSensor();
+	if (leftDistance != 9999) {
+		chassis.setPose(leftDistance, chassis.getPose().y, chassis.getPose().theta);
+	}
+	chassis.moveToPoint(26, -48, 950, {.maxSpeed=70}, false);
 	left_motors.move(-70);
 	right_motors.move(-70);
 	pros::delay(300);
-
-	chassis.moveToPoint(49, -58, 1300, {.maxSpeed=100});
-	chassis.moveToPoint(56, -48, 1300, {.maxSpeed=80}, false);
-	chassis.turnToHeading(135, 750, {.maxSpeed=90}, false);
+	
+	chassis.moveToPoint(38, -62, 650, {.maxSpeed=100});
+    chassis.moveToPoint(63, -58, 1200, {.maxSpeed=80});
+	chassis.turnToHeading(135, 750, {.maxSpeed=100}, false);
 
 	left_motors.move(70);
 	right_motors.move(70);
-	pros::delay(1300);
+	pros::delay(1750);
 	left_motors.move(-70);
 	right_motors.move(-70);
-	pros::delay(750);
+	pros::delay(600);
+	left_motors.brake();
+	right_motors.brake();
+	pros::delay(100);
 	left_motors.move(70);
 	right_motors.move(70);
-	pros::delay(1000);
+	pros::delay(1200);
 
-	chassis.moveToPoint(56, -56, 1000, {.forwards=false}, false);
-	chassis.turnToPoint(0, 0, 750, {.maxSpeed=100}, false);
-	left_motors.move(50);
-	right_motors.move(50);
+	chassis.moveToPoint(48, -48, 1000, {.forwards=false}, false);
+	chassis.turnToHeading(-45, 750, {.maxSpeed=100}, false);
+	left_motors.move(60);
+	right_motors.move(60);
 	subsystem.arm.PID(350, 1000);
-
 	
 }
 

@@ -1,3 +1,4 @@
+#include "globals.h"
 #include "robot/auton.h"
 #include "main.h"
 
@@ -7,43 +8,60 @@ using namespace Robot::Globals;
 // estimated autos
 // auto 1: sig solo
 void Autonomous::BlueNegative() {
-	chassis.setPose(60, 12, 135);
-	
-	chassis.moveToPoint(64, 8, 135);
-	// move the arm
-	ArmMotor.move(127);
+	chassis.setPose(61.2, 13, 135);
+
+    ArmMotor.move(127);
 	ArmMotor2.move(127);
+	pros::delay(400);
+	ArmMotor.move(-127);
+	ArmMotor2.move(-127);
+    
+    chassis.moveToPoint(28, 24, 950, {.forwards=false, .maxSpeed=100}, false);
+    ArmMotor.move(-20);
+    ArmMotor2.move(-20);
+	subsystem.pneumatics.toggleLatch();
+	pros::delay(200);
+	subsystem.intake.toggle();
+
+    chassis.moveToPoint(10, 44, 1700, {.maxSpeed=100}, false);
+    chassis.moveToPoint(28, 28, 1250, {.forwards=false});
+	chassis.turnToHeading(0, 750, {.maxSpeed=100}, false);
+	pros::delay(50);
+	float rightDistance = distanceResetRightSensor();
+	if (rightDistance != 9999) {
+		chassis.setPose(rightDistance, chassis.getPose().y, chassis.getPose().theta);
+	}
+    chassis.moveToPoint(25, 48, 1100, {.maxSpeed=90}, false);
+    left_motors.move(-127);
+	right_motors.move(-127);
+	pros::delay(300);
+
+	chassis.moveToPoint(48, 0, 1750, {.maxSpeed=80});
+	pros::delay(800);
+	subsystem.pneumatics.toggleLatch();
+	subsystem.pneumatics.toggleIntakeLift();
+	pros::delay(650);
+	subsystem.pneumatics.toggleIntakeLift();
+	chassis.cancelAllMotions();
+	pros::delay(400);
+	subsystem.intake.toggle();
+	moveMotors(-60, 300);
+	chassis.moveToPoint(48, 0, 600, {.forwards=false, .maxSpeed=120}, false);
+	chassis.turnToPoint(23, -22, 750, {.forwards=false, .maxSpeed=100}, false);
+	chassis.moveToPoint(23, -22, 1200, {.forwards=false, .maxSpeed=100}, false);
+	subsystem.pneumatics.toggleLatch();
+	chassis.turnToPoint(24, -48, 700, {.maxSpeed=100});
+	pros::delay(200);
+	subsystem.intake.toggle();
+	chassis.moveToPoint(24, -48, 1500, {.maxSpeed=100});
 	pros::delay(500);
-	ArmMotor.brake();
-	ArmMotor2.brake();
-	subsystem.arm.PID(0, 500);
-	ArmMotor.move(-20);
-	ArmMotor2.move(-20);
-	subsystem.intake.toggle();
-	chassis.moveToPoint(30, 20, 1000, {.forwards=false, .maxSpeed=100});
-	subsystem.pneumatics.toggleLatch();
-	chassis.turnToHeading(-65, 750, {.maxSpeed=80});
-	chassis.moveToPoint(7, 40, 750, {.maxSpeed=60}, false);
-	chassis.moveToPoint(7, 46, 750, {.maxSpeed=60}, false);
-	chassis.moveToPoint(24, 24, 1000, {.forwards=false, .maxSpeed=100});
-	chassis.turnToHeading(0, 500);
-	chassis.moveToPoint(24, 44, 750, {.maxSpeed=80}, false);
-	chassis.turnToPoint(48, 0, 500, {}, false);
-	subsystem.pneumatics.toggleLatch();
-	subsystem.intake.toggle();
-	pros::delay(250);
-	subsystem.intake.toggle();
-	chassis.moveToPoint(48, 0, 1000, {.maxSpeed=100});
-	chassis.moveToPoint(50, -8, 500, {.maxSpeed=80});
-	pros::delay(300); // something needed to make this ring intake more consistent (intake red, then keep blue)
-	subsystem.intake.toggle();
-	chassis.turnToPoint(24, -24, 500, {.forwards=false});
-	chassis.moveToPoint(24,-24, 750, {.maxSpeed=80});
-	subsystem.pneumatics.toggleLatch();
-	chassis.turnToPoint(24, -48, 500);
-	chassis.moveToPoint(24, -50, 750, {.maxSpeed=100});
-	subsystem.arm.PID(15400, 750);
-	chassis.moveToPoint(14, -14, 1000, {.maxSpeed=60});
+	subsystem.arm.PID(350, 450);
+	chassis.waitUntilDone();
+	chassis.turnToPoint(0, 0, 600, {.maxSpeed=100}, false);
+	left_motors.move(70);
+	right_motors.move(70);
+
+
 }
 
 /*
